@@ -1,1 +1,69 @@
 /* You can add global styles to this file, and also import other style files */
+.my-card {
+  border-radius: 50px;
+  background-color: #f1f5fe;
+  margin-top: 4vh;
+  height: 94vh;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
+p {
+  color: #111343;
+}
+
+.auth-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* background-color: yellow; */
+}
+
+/* hiding arrows for input type number */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.auth-input {
+  width: 30vw;
+}
+
+.btn-auth-submit {
+  width: 30vw;
+  border-radius: 30px;
+  border: none;
+  background-color: #6f1cfa;
+  color: #fff;
+  padding: 5px;
+}
+
+.auth-title {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 50px;
+  color: #111343;
+}
+
+.auth-small-text {
+  font-size: 12px;
+  color: grey;
+}
+
+.bg-yellow {
+  background-color: yellowgreen;
+}
+
+.pointer {
+  cursor: pointer;
+}
