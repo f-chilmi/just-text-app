@@ -1,20 +1,27 @@
 <div class="my-card">
   <div class="auth-card">
     <p class="auth-title text-center">Login to your account</p> 
-    <form
+    <!-- <form
       *ngIf="!isLoggedIn"
       name="form"
       (ngSubmit)="f.form.valid && onSubmit()"
       #f="ngForm"
       novalidate
-    >
+    > -->
+    <form
+      *ngIf="!isLoggedIn"
+      name="form"
+      (ngSubmit)="onSubmit(f)"
+      #f="ngForm"
+      novalidate
+    > 
       <div class="mb-4 auth-input form-group">
         <input
           type="text" 
           class="form-control" 
           id="phone"
           name="phone"
-          [(ngModel)]="form.phone"
+          ngModel
           required
           #phone="ngModel" 
           placeholder="Phone"
@@ -33,7 +40,7 @@
           class="form-control"
           placeholder="Password"
           name="password"
-          [(ngModel)]="form.password"
+          ngModel
           required
           minlength="6"
           #password="ngModel"

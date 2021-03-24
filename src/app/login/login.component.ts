@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -10,10 +11,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  form: any = {
-    phone: null,
-    password: null
-  };
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
@@ -31,10 +28,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onSubmit(): void {
-    const { phone, password } = this.form;
-
-    this.authService.login(phone, password).subscribe(
+  onSubmit(form: NgForm) {
+    this.authService.login(form.value.phone, form.value.password).subscribe(
       data => {
         this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
