@@ -1,20 +1,73 @@
 <div class="my-card">
   <div class="auth-card">
     <p class="auth-title text-center">Login to your account</p> 
-    <form>
-      <div class="mb-4 auth-input">
-        <input type="number" class="form-control" id="phone" placeholder="Phone">
+    <form
+      *ngIf="!isLoggedIn"
+      name="form"
+      (ngSubmit)="f.form.valid && onSubmit()"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="mb-4 auth-input form-group">
+        <input
+          type="text" 
+          class="form-control" 
+          id="phone"
+          name="phone"
+          [(ngModel)]="form.phone"
+          required
+          #phone="ngModel" 
+          placeholder="Phone"
+        >
+        <div
+          class="alert alert-danger"
+          role="alert"
+          *ngIf="phone.errors && f.submitted"
+        >
+          Phone is required!
+        </div>
       </div>
-      <div class="mb-4 auth-input">
-        <input type="password" class="form-control" placeholder="Password">
+      <div class="mb-4 auth-input form-group">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Password"
+          name="password"
+          [(ngModel)]="form.password"
+          required
+          minlength="6"
+          #password="ngModel"
+        >
+        <div
+          class="alert alert-danger"
+          role="alert"
+          *ngIf="password.errors && f.submitted"
+        >
+          <div *ngIf="password.errors.required">Password is required</div>
+          <div *ngIf="password.errors.minlength">
+            Password must be at least 6 characters
+          </div>
+        </div>
       </div>
-      <!-- <button type="submit" class="btn-auth-submit mb-2" >Submit</button> -->
-      <div class="btn-auth-submit mb-2">
+      <button type="submit" class="btn-auth-submit mb-2" >Submit</button>
+      <!-- <div class="btn-auth-submit mb-2">
         <a href="/chat">Submit</a>
-      </div>
+      </div> -->
       <div>
         <span class="float-end auth-small-text">Not registered? <a class="text-decoration-none" href="/register">Create an account</a> </span>
       </div>
+      <div class="form-group">
+        <div
+          class="alert alert-danger"
+          role="alert"
+          *ngIf="f.submitted && isLoginFailed"
+        >
+          Login failed: {{ errorMessage }}
+        </div>
+      </div>
     </form>
+    <div class="alert alert-success" *ngIf="isLoggedIn">
+      Success log in!
+    </div>
   </div>
 </div>

@@ -67,3 +67,7 @@ input[type=number] {
 .pointer {
   cursor: pointer;
 }
+
+.alert {
+  width: 30vw;
+}

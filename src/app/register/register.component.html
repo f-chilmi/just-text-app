@@ -1,20 +1,85 @@
 <div class="my-card">
   <div class="auth-card">
     <p class="auth-title text-center">Create new account</p> 
-    <form>
-      <div class="mb-4 auth-input">
-        <input type="text" class="form-control" id="phone" placeholder="Name">
+    <form
+      *ngIf="!isSuccessful"
+      name="form"
+      (ngSubmit)="f.form.valid && onSubmit()"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="mb-4 auth-input form-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          id="name" 
+          placeholder="Name"
+          name="name"
+          [(ngModel)]="form.name"
+          required
+          minlength="3"
+          maxlength="20"
+          #name="ngModel"
+        >
+        <div class="alert-danger" *ngIf="name.errors && f.submitted">
+          <div *ngIf="name.errors.required">Name is required</div>
+          <div *ngIf="name.errors.minlength">
+            Name must be at least 3 characters
+          </div>
+          <div *ngIf="name.errors.maxlength">
+            Name must be at most 20 characters
+          </div>
+        </div>
       </div>
-      <div class="mb-4 auth-input">
-        <input type="number" class="form-control" id="phone" placeholder="Phone">
+      <div class="mb-4 auth-input form-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          id="phone"
+          name="phone"
+          [(ngModel)]="form.phone"
+          required
+          minlength="8"
+          maxlength="15"
+          #phone="ngModel" 
+          placeholder="Phone"
+        >
+        <div class="alert-danger" *ngIf="phone.errors && f.submitted">
+          <div *ngIf="phone.errors.required">Phone is required</div>
+          <div *ngIf="phone.errors.phone">
+            Phone must be a valid number
+          </div>
+        </div>
       </div>
-      <div class="mb-4 auth-input">
-        <input type="password" class="form-control" placeholder="Password">
+      <div class="mb-4 auth-input form-group">
+        <input 
+          type="password"
+          name="password"
+          [(ngModel)]="form.password"
+          required
+          minlength="6"
+          #password="ngModel"
+          class="form-control" 
+          placeholder="Password"
+        >
+        <div class="alert-danger" *ngIf="password.errors && f.submitted">
+          <div *ngIf="password.errors.required">Password is required</div>
+          <div *ngIf="password.errors.minlength">
+            Password must be at least 6 characters
+          </div>
+        </div>
       </div>
       <button type="submit" class="btn-auth-submit mb-2">Submit</button>
       <div>
         <span class="float-end auth-small-text">Already have an account? <a class="text-decoration-none" href="/">Login</a> </span>
       </div>
+      <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
+        Signup failed!<br />{{ errorMessage }}
+      </div>
     </form>
+    <div class="alert alert-success" *ngIf="isSuccessful">
+      <p>Your registration is successful!</p>
+      <a class="text-decoration-none" href="/">Go To Login</a>
+    </div>
   </div>
 </div>

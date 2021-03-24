@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "target": "https://guarded-woodland-57057.herokuapp.com",
+    "logLevel": "debug",
+    "secure": true,
+      "changeOrigin": true
+  }
+}
