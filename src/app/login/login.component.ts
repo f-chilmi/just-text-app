@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
-      this.router.navigate(['chat'])
+      this.router.navigate(['chat']);
     }
   }
 
@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
+        this.router.navigate(['chat']);
       },
       err => {
         this.errorMessage = err.error.error;

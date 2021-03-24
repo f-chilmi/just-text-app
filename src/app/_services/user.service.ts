@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
-const API_URL = 'http://localhost:8080/api/';
+const URL = environment.URL
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class UserService {
   ) { }
 
   getContact(): Observable<any> {
-    return this.http.get(API_URL + 'contact', { responseType: 'text' });
+    return this.http.get(URL + 'contact', { responseType: 'text' });
   }
 
   // getUserBoard(): Observable<any> {

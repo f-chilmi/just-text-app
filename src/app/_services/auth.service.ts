@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
-const AUTH_API = 'https://guarded-woodland-57057.herokuapp.com/api/auth/';
-// const AUTH_API = 'http://localhost:8080/api/auth/';
+const URL = `${environment.URL}auth/`
 
 const httpOptions = {
   headers: new HttpHeaders({ 
@@ -22,14 +22,14 @@ export class AuthService {
   ) { }
 
   login(phone: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API + 'login', {
+    return this.http.post(URL + 'login', {
       phone,
       password
     }, httpOptions)
   }
 
   register(name: string, phone: string, password: string): Observable<any> {
-    return this.http.post(AUTH_API + 'register', {
+    return this.http.post(URL + 'register', {
       name,
       phone,
       password
