@@ -13,10 +13,15 @@
     <!-- right side of chat view (chatroom) -->
     <div class="right">
 
-      <app-contact-name [activeUser]="activeUser" ></app-contact-name>
+      <ng-container *ngIf="activeRoom === undefined; else roomIsActive">
+        <div>No room selected</div>
+      </ng-container>
 
-      <app-chatroom [activeRoom]="activeRoom" [myId]="userId" ></app-chatroom>
-
+      <ng-template #roomIsActive>
+        <app-contact-name [activeUser]="activeUser" ></app-contact-name>
+        <app-chatroom [activeRoom]="activeRoom" [myId]="userId" ></app-chatroom>
+      </ng-template>
+      
     </div>
   </div>
 </div>
