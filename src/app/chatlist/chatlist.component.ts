@@ -4,6 +4,9 @@ import { TokenStorageService } from '../_services/token-storage.service';
 import { UserService } from '../_services/user.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { ChatService } from '../_services/chat.service';
+import { Contact } from '../_modules/contact';
+import { Chat } from '../_modules/chat';
 
 const URL = `${environment.URL}`
 
@@ -13,26 +16,54 @@ const URL = `${environment.URL}`
   styleUrls: ['./chatlist.component.css']
 })
 export class ChatlistComponent implements OnInit {
-  items = [0, 1, 2, 3, 4,5, 6, 7, 8, 9]
-  contact = this.user.getContact();
+  items = [0, 1, 2, 3, 4,5, 6, 7, 8, 9];
+  contactMessage: Contact;
+  chatRoom: Chat;
+  userId: number = this.tokenStorage.getUser()._id;
+
+  id: number;
+
   constructor(
-    private authService: AuthService,
     private tokenStorage: TokenStorageService,
     private router: Router,
     private user: UserService,
+    private chat: ChatService
   ) { }
 
   ngOnInit(): void {
     if (!this.tokenStorage.getToken()) {
       this.router.navigate(['/'])
     }
-    const userId = this.tokenStorage.getUser().ID;
-    const conn = new WebSocket("wss://guarded-woodland-57057.herokuapp.com/api/ws/" + userId + "?access_token=" + this.tokenStorage.getToken());
+    const userId = this.tokenStorage.getUser()._id;
+    const conn = new WebSocket("wss://guarded-woodland-57057.herokuapp.com/ws/" + userId + "?access_token=" + this.tokenStorage.getToken());
     conn.onclose = function () {
       console.log("Connection closed.");
     };
-    this.user.getContact()
-    console.log(this.user.getContact())
+    this.user.getContact().subscribe(val => {
+      this.contactMessage = val
+      console.log('contact', this.contactMessage)
+    })
+    // this.chat.getChat().subscribe(val => {
+    //   this.chatRoom = val
+    //   console.log('chatRoom', this.chatRoom)
+    // })    
+  }
+
+  selectList(id: number) {
+    console.log(id)
+    this.chat.getChat(id).subscribe(val => console.log('chat', val))
+  }
+
+  getContact() {
+    this.user.getContact().subscribe(val => console.log('contact', val))
+  }
+
+  // getChat() {
+  //   this.chat.getChat().subscribe(val => console.log('chat', val))
+  // }
+
+  newChat() {
+    this.chat.newChat('081111111111', 'HI').subscribe(val => console.log(val))
   }
 
 }

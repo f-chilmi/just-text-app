@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Input } from "@angular/core";
+import { Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
   selector: 'app-list-chat',
@@ -8,6 +8,10 @@ import { Input } from "@angular/core";
 })
 export class ListChatComponent implements OnInit {
   @Input() items;
+  @Input() contactMessage;
+  @Input() myId;
+
+  @Output() selectList = new EventEmitter<number>();
   
   constructor() { }
 

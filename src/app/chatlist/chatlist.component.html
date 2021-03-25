@@ -4,9 +4,9 @@
 
     <!-- left side of chat view (chatlist) -->
     <div class="left">
-      <app-search></app-search>
+      <app-new-chat></app-new-chat>
       
-      <app-list-chat [items]="items" ></app-list-chat>
+      <app-list-chat [items]="items" [contactMessage]="contactMessage" [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
       
     </div>
 
@@ -65,6 +65,9 @@
         </div>
 
       </div> -->
+      <button (click)="getContact()" >Contact</button>
+      <!-- <button (click)="getChat()" >Chat</button> -->
+      <button (click)="newChat()" >newChat</button>
 
     </div>
   </div>
