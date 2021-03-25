@@ -4,39 +4,20 @@
 
     <!-- left side of chat view (chatlist) -->
     <div class="left">
-      <input
-        type='search'
-        class='form-control bg-white search mb-3 mt-1'
-        placeholder='Search phone'
-      />
-      <div class="list-wrapper">
-        <div class="list mb-3" *ngFor="let item of items">
-          <div class="img-wrapper d-flex align-items-center justify-content-center">
-            <img src="https://i.pinimg.com/236x/ce/2a/95/ce2a95e99faceaf7af19c273b10ebcc1.jpg" alt="avatar">
-          </div>
-          <div class="text-wrapper d-flex flex-column justify-content-center">
-            <p class="sender-name">Maureen</p>
-            <p class="content">The align-content prop ...</p>
-          </div>
-          <div class="time-wrapper d-flex align-items-center justify-content-end">
-            <p>15:00</p>
-          </div>
-        </div>
-      </div>
+      <app-search></app-search>
+      
+      <app-list-chat [items]="items" ></app-list-chat>
+      
     </div>
 
     <!-- right side of chat view (chatroom) -->
     <div class="right">
-      <div class="contact-info mb-2">
-        <div class="img-contact d-flex align-items-center justify-content-center">
-          <img src="https://i.pinimg.com/236x/ce/2a/95/ce2a95e99faceaf7af19c273b10ebcc1.jpg" alt="avatar">
-        </div>
-        <div class="text-wrapper d-flex flex-column justify-content-center">
-          <p class="sender-name-right">Maureen</p>
-        </div>
-      </div>
+
+      <app-contact-name></app-contact-name>
+
+      <app-chatroom></app-chatroom>
     
-      <div class="chatroom w-100">
+      <!-- <div class="chatroom w-100">
 
         <div class="chatroom-wrapper mb-2">
           <div class="balloon-left">
@@ -83,7 +64,7 @@
           </div>
         </div>
 
-      </div>
+      </div> -->
 
     </div>
   </div>

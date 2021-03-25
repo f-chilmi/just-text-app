@@ -1,0 +1,96 @@
+.contact-info {
+  display: flex;
+  height: 75px;
+  background-color: #fafbff;
+  border-radius: 10px;
+}
+
+.img-contact {
+  width: 15%;
+}
+
+.img-contact img {
+  border-radius: 50%;
+  width: 60px;
+}
+
+.sender-name-right {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.chatroom {
+  height: 86%;
+  background-color: #fafbff;
+  padding: 20px;
+  /* overflow: auto; */
+}
+
+.chatroom-wrapper {
+  height: 90%;
+  overflow: auto;
+}
+
+.balloon-left {
+  /* border-radius: 10px; */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: none;
+  background-color: #f1f5fe;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 20px;
+}
+
+.left-chat {
+  font-size: 13px;
+}
+
+.balloon-right {
+  /* border-radius: 10px; */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: none;
+  background-color: #6d1cff;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 20px;
+}
+
+.right-chat {
+  font-size: 13px;
+  color: #f1f5fe;
+}
+
+.input-chat {
+  border-radius: 10px;
+  height: 50px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+textarea {
+  resize: none;
+  border: none;
+}
+
+.textarea {
+  width: 95%;
+}
+
+.send {
+  width: 5%;
+  color: #6d1cff;
+}
+
+.send i {
+  font-size: 28px;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}

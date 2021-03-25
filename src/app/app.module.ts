@@ -8,6 +8,10 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ChatlistComponent } from './chatlist/chatlist.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SearchComponent } from './chatlist/search/search.component';
+import { ListChatComponent } from './chatlist/list-chat/list-chat.component';
+import { ContactNameComponent } from './chatlist/contact-name/contact-name.component';
+import { ChatroomComponent } from './chatlist/chatroom/chatroom.component';
 
 // import { authInterceptorProviders } from './_helpers/auth.interceptor';
 
@@ -16,7 +20,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ChatlistComponent
+    ChatlistComponent,
+    SearchComponent,
+    ListChatComponent,
+    ContactNameComponent,
+    ChatroomComponent
   ],
   imports: [
     BrowserModule,

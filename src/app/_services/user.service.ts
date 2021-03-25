@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { TokenStorageService } from './token-storage.service';
+import { catchError, map, tap } from 'rxjs/operators';
+
+import { Contact } from '../_modules/contact';
 
 const URL = environment.URL
 
@@ -11,23 +15,29 @@ const URL = environment.URL
 export class UserService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private tokenStorage: TokenStorageService
   ) { }
 
-  getContact(): Observable<any> {
-    return this.http.get(URL + 'contact', { responseType: 'text' });
+  getContact(): Observable<Contact> {
+    const httpHeader = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.tokenStorage.getToken()}`
+      })
+    }
+    return this.http.get<Contact>(URL + 'contact', httpHeader)
   }
 
-  // getUserBoard(): Observable<any> {
-  //   return this.http.get(API_URL + 'user', { responseType: 'text' });
-  // }
-
-  // getModeratorBoard(): Observable<any> {
-  //   return this.http.get(API_URL + 'mod', { responseType: 'text' });
-  // }
-
-  // getAdminBoard(): Observable<any> {
-  //   return this.http.get(API_URL + 'admin', { responseType: 'text' });
+  // getContact() {
+  //   const httpHeader = {
+  //     headers: new HttpHeaders({
+  //       'Authorization': `Bearer ${this.tokenStorage.getToken()}`,
+  //       'Access-Control-Allow-Origin' : '*'
+  //     })
+  //   }
+  //   return this.http.get(URL + 'contact', httpHeader).subscribe(res => {
+  //     console.log(res)
+  //   })
   // }
 
 }
