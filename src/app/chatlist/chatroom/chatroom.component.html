@@ -1,42 +1,21 @@
 <div class="chatroom w-100">
 
   <div class="chatroom-wrapper mb-2">
-    <div class="balloon-left">
-      <p class="left-chat">
-        Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-      </p>
+    
+    <div *ngIf="activeRoom!==undefined">
+      <div *ngFor="let chat of activeRoom" >
+        <ng-container *ngIf="chat.senderId === myId; else imNotSender">
+          <div class="balloon-right">
+            <p class="right-chat"> {{chat.message}} </p>
+          </div>
+        </ng-container>
+        <ng-template #imNotSender>
+          <div class="balloon-left">
+            <p class="left-chat"> {{chat.message}} </p>
+          </div>
+        </ng-template>
+      </div>
     </div>
-
-    <div class="balloon-right">
-      <p class="right-chat">
-        Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-      </p>
-    </div>
-
-    <div class="balloon-left">
-      <p class="left-chat">
-        Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-      </p>
-    </div>
-
-    <div class="balloon-right">
-      <p class="right-chat">
-        Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-      </p>
-    </div>
-
-    <div class="balloon-left">
-      <p class="left-chat">
-        Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-      </p>
-    </div>
-
-    <div class="balloon-right">
-      <p class="right-chat">
-        Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-      </p>
-    </div>
-  </div>
 
   <div class="input-chat d-flex shadow-sm">
     <textarea class="form-control textarea" rows="1" placeholder="Type here"></textarea>

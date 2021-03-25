@@ -18,7 +18,8 @@ const URL = `${environment.URL}`
 export class ChatlistComponent implements OnInit {
   items = [0, 1, 2, 3, 4,5, 6, 7, 8, 9];
   contactMessage: Contact;
-  chatRoom: Chat;
+  postNewChat: Chat;
+  activeRoom: [];
   userId: number = this.tokenStorage.getUser()._id;
 
   id: number;
@@ -41,26 +42,16 @@ export class ChatlistComponent implements OnInit {
     };
     this.user.getContact().subscribe(val => {
       this.contactMessage = val
-      console.log('contact', this.contactMessage)
-    })
-    // this.chat.getChat().subscribe(val => {
-    //   this.chatRoom = val
-    //   console.log('chatRoom', this.chatRoom)
-    // })    
+    })   
   }
 
   selectList(id: number) {
-    console.log(id)
-    this.chat.getChat(id).subscribe(val => console.log('chat', val))
+    this.chat.getChat(id).subscribe(val => this.activeRoom = val)
   }
 
   getContact() {
     this.user.getContact().subscribe(val => console.log('contact', val))
   }
-
-  // getChat() {
-  //   this.chat.getChat().subscribe(val => console.log('chat', val))
-  // }
 
   newChat() {
     this.chat.newChat('081111111111', 'HI').subscribe(val => console.log(val))
