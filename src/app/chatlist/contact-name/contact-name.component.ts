@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
   selector: 'app-contact-name',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./contact-name.component.css']
 })
 export class ContactNameComponent implements OnInit {
+
+  @Input() activeUser;
 
   constructor() { }
 

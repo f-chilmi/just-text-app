@@ -11,7 +11,7 @@ export class ListChatComponent implements OnInit {
   @Input() contactMessage;
   @Input() myId;
 
-  @Output() selectList = new EventEmitter<number>();
+  @Output() selectList = new EventEmitter<{id: string, name: string}>();
   
   constructor() { }
 

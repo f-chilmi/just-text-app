@@ -13,7 +13,7 @@
     <!-- right side of chat view (chatroom) -->
     <div class="right">
 
-      <app-contact-name></app-contact-name>
+      <app-contact-name [activeUser]="activeUser" ></app-contact-name>
 
       <app-chatroom [activeRoom]="activeRoom" [myId]="userId" ></app-chatroom>
 

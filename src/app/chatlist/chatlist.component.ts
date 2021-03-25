@@ -21,8 +21,8 @@ export class ChatlistComponent implements OnInit {
   postNewChat: Chat;
   activeRoom: [];
   userId: number = this.tokenStorage.getUser()._id;
+  activeUser: string = '';
 
-  id: number;
 
   constructor(
     private tokenStorage: TokenStorageService,
@@ -45,8 +45,10 @@ export class ChatlistComponent implements OnInit {
     })   
   }
 
-  selectList(id: number) {
-    this.chat.getChat(id).subscribe(val => this.activeRoom = val)
+  selectList($event) {
+    // console.log($event)
+    this.activeUser = $event.name
+    this.chat.getChat($event.id).subscribe(val => this.activeRoom = val)
   }
 
   getContact() {

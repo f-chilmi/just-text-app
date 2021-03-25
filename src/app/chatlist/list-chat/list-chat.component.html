@@ -5,7 +5,10 @@
       <img src="https://i.pinimg.com/236x/ce/2a/95/ce2a95e99faceaf7af19c273b10ebcc1.jpg" alt="avatar">
     </div>
 
-    <div class="text-wrapper d-flex flex-column justify-content-center" (click)="selectList.emit(message._id)" >
+    <div 
+      class="text-wrapper d-flex flex-column justify-content-center" 
+      (click)="selectList.emit({id: message._id, name: message.usersInfo[0]._id === myId ? message.usersInfo[1].name : message.usersInfo[0].name})" 
+    >
       <ng-container *ngIf="message.usersInfo[0]._id === myId; else anotherId">
         <p class="sender-name"> {{message.usersInfo[1].name}}</p>
       </ng-container>
@@ -13,7 +16,6 @@
         <p class="sender-name"> {{message.usersInfo[0].name}}</p>
       </ng-template>
       
-      <p class="content">The align-content prop ...</p>
     </div>
 
     <div class="time-wrapper d-flex align-items-center justify-content-end">
