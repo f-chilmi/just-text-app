@@ -11,6 +11,10 @@
   display: flex;
 }
 
+.list:hover {
+  background-color: #f2f4f8;
+}
+
 .img-wrapper {
   width: 20%;
 }

@@ -46,7 +46,6 @@ export class ChatlistComponent implements OnInit {
   }
 
   selectList($event) {
-    // console.log($event)
     this.activeUser = $event.name
     this.chat.getChat($event.id).subscribe(val => this.activeRoom = val)
   }

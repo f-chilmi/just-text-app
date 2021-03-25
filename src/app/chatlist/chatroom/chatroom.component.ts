@@ -15,8 +15,4 @@ export class ChatroomComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  ngOnChanges(): void {
-    console.log('activeRoom', this.activeRoom)
-  }
-
 }
