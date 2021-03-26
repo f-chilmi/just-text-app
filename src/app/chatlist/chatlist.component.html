@@ -4,87 +4,24 @@
 
     <!-- left side of chat view (chatlist) -->
     <div class="left">
-      <input
-        type='search'
-        class='form-control bg-white search mb-3 mt-1'
-        placeholder='Search phone'
-      />
-      <div class="list-wrapper">
-        <div class="list mb-3" *ngFor="let item of items">
-          <div class="img-wrapper d-flex align-items-center justify-content-center">
-            <img src="https://i.pinimg.com/236x/ce/2a/95/ce2a95e99faceaf7af19c273b10ebcc1.jpg" alt="avatar">
-          </div>
-          <div class="text-wrapper d-flex flex-column justify-content-center">
-            <p class="sender-name">Maureen</p>
-            <p class="content">The align-content prop ...</p>
-          </div>
-          <div class="time-wrapper d-flex align-items-center justify-content-end">
-            <p>15:00</p>
-          </div>
-        </div>
-      </div>
+      <app-new-chat></app-new-chat>
+      
+      <app-list-chat [items]="items" [contactMessage]="contactMessage" [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
+      
     </div>
 
     <!-- right side of chat view (chatroom) -->
     <div class="right">
-      <div class="contact-info mb-2">
-        <div class="img-contact d-flex align-items-center justify-content-center">
-          <img src="https://i.pinimg.com/236x/ce/2a/95/ce2a95e99faceaf7af19c273b10ebcc1.jpg" alt="avatar">
-        </div>
-        <div class="text-wrapper d-flex flex-column justify-content-center">
-          <p class="sender-name-right">Maureen</p>
-        </div>
-      </div>
-    
-      <div class="chatroom w-100">
 
-        <div class="chatroom-wrapper mb-2">
-          <div class="balloon-left">
-            <p class="left-chat">
-              Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-            </p>
-          </div>
-  
-          <div class="balloon-right">
-            <p class="right-chat">
-              Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-            </p>
-          </div>
-  
-          <div class="balloon-left">
-            <p class="left-chat">
-              Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-            </p>
-          </div>
-  
-          <div class="balloon-right">
-            <p class="right-chat">
-              Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-            </p>
-          </div>
-  
-          <div class="balloon-left">
-            <p class="left-chat">
-              Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-            </p>
-          </div>
-  
-          <div class="balloon-right">
-            <p class="right-chat">
-              Tikal adalah reruntuhan kota kuno di hutan hujan Guatemala yang dulu mungkin bernama Yax Mutal. Tikal merupakan salah satu kota terbesar dalam peradaban Maya pada zaman pra-Kolumbus. Kota ini terletak di wilayah Cekungan Petén di Departemen El Petén. 
-            </p>
-          </div>
-        </div>
+      <ng-container *ngIf="activeRoom === undefined; else roomIsActive">
+        <div>No room selected</div>
+      </ng-container>
 
-        <div class="input-chat d-flex shadow-sm">
-          <textarea class="form-control textarea" rows="1" placeholder="Type here"></textarea>
-          <div class="send d-flex justify-content-end align-items-center pointer"> 
-            <i class="material-icons">send</i> 
-          </div>
-        </div>
-
-      </div>
-
+      <ng-template #roomIsActive>
+        <app-contact-name [activeUser]="activeUser" ></app-contact-name>
+        <app-chatroom [activeRoom]="activeRoom" [myId]="userId" ></app-chatroom>
+      </ng-template>
+      
     </div>
   </div>
 </div>
