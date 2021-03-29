@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { TokenStorageService } from './token-storage.service';
 
 import { Chat } from '../_modules/chat'
-import { stringify } from '@angular/compiler/src/util';
 
 const URL = environment.URL
 
@@ -14,9 +13,13 @@ const URL = environment.URL
 })
 export class ChatService {
 
+  userId: number = this.tokenStorage.getUser()._id;
+
+  private websocketUrl= new WebSocket(`wss://guarded-woodland-57057.herokuapp.com/ws/${this.userId}?access_token=${this.tokenStorage.getToken()}`);
+
   constructor(
     private http: HttpClient,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
   ) { }
 
   httpHeader = {
@@ -24,6 +27,13 @@ export class ChatService {
       'Authorization': `Bearer ${this.tokenStorage.getToken()}`,
       'content-type': 'application/json'
     })
+  }
+
+  send(sendData): Observable<any> {
+    console.log(sendData)
+    const conn = this.websocketUrl
+    conn.send(JSON.stringify(sendData))
+    return;
   }
 
   getChat(id: number): Observable<any> {
