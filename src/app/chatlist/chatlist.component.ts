@@ -56,8 +56,8 @@ export class ChatlistComponent implements OnInit {
       for (let i = 0; i < messages.length; i++) {
         var plainMessage = messages[i];
         var formattedMessage = JSON.parse(plainMessage);
-        console.log(formattedMessage)
-        
+        console.log(formattedMessage)      
+          
       }
     }
     // const userId = this.tokenStorage.getUser()._id;
