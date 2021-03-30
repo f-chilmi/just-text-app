@@ -47,46 +47,25 @@ export class ChatlistComponent implements OnInit {
     }
 
     const conn = this.websocketUrl
-    const userId = this.tokenStorage.getUser()._id
     conn.onclose = function () {
       console.log("Connection closed.");
     }
     conn.onmessage = function(evt) {
       let messages = evt.data.split('\n');
-      for (let i = 0; i < messages.length; i++) {
-        var plainMessage = messages[i];
-        var formattedMessage = JSON.parse(plainMessage);
-        console.log(formattedMessage)      
-          
-      }
+      const newMessage = messages.map(element => {
+        const formatted = JSON.parse(element)
+        return formatted
+      });
+      listen(newMessage)
     }
-    // const userId = this.tokenStorage.getUser()._id;
-    // const conn = new WebSocket("wss://guarded-woodland-57057.herokuapp.com/ws/" + userId + "?access_token=" + this.tokenStorage.getToken());
-    // conn.onclose = function () {
-    //   console.log("Connection closed.");
-    // };
 
-    // let newRoom: Array<object>
-    // conn.onmessage = function (evt) {
-    // let messages = evt.data.split('\n');
-    // for (let i = 0; i < messages.length; i++) {
-    //   var plainMessage = messages[i];
-    //   var formattedMessage = JSON.parse(plainMessage);
-    //   //this means, when incoming message is an acknowledge that current user message was sent to receiver, then..
-    //   if(formattedMessage['fromUserId'] == userId || formattedMessage['toUserId'] == userId) {
-    //     //if current user is opening that chat log according to this message
-    //     const newMessage: Object = {
-    //       contactId: formattedMessage['fromUserId'] == userId ? formattedMessage['toUserId'] : formattedMessage['fromUserId'],
-    //       message: formattedMessage.data,
-    //       senderId: formattedMessage['fromUserId'] == userId ? formattedMessage['fromUserId'] : formattedMessage['toUserId']
-    //     }
-    //     newRoom.push(newMessage)
-    //     console.log('newMessage', newMessage)
-    //   } else { //this means, when incoming message is from other people send message to current user
-    //     //if current user is opening that chat log according to this message
-    //     console.log('elseFormattedMessage', formattedMessage)
-    //   }
-    // }};
+    const listen = (val) => {
+      const senderId = val[0].fromUserId
+      const message = val[0].data
+      const contactId = val[0].contactId
+      const incomingChat = { contactId, message, senderId }
+      this.activeRoom = [ incomingChat, ...this.activeRoom ]
+    }
       
   }
 
@@ -97,8 +76,15 @@ export class ChatlistComponent implements OnInit {
     this.chat.getChat($event.id).subscribe(val => this.activeRoom = val)
   }
 
-  send(message) {
-    console.log(message)
+  sendChat($event) {
+    const conn = this.websocketUrl
+    conn.send(JSON.stringify($event))
+
+    // const senderId = $event.fromUserId
+    // const message = $event.data
+    // const contactId = $event.contactId
+    // const incomingChat = { contactId, message, senderId }
+    // this.activeRoom = [ incomingChat, ...this.activeRoom ]
   }
 
   getContact() {

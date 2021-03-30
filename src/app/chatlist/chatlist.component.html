@@ -19,7 +19,13 @@
 
       <ng-template #roomIsActive>
         <app-contact-name [activeUser]="activeUser" ></app-contact-name>
-        <app-chatroom [activeRoom]="activeRoom" [activeId]="activeId" [activeContactId]="activeContactId" [myId]="userId" ></app-chatroom>
+        <app-chatroom 
+          [activeRoom]="activeRoom" 
+          [activeId]="activeId" 
+          [activeContactId]="activeContactId" 
+          [myId]="userId" 
+          (sendChat)="sendChat($event)" >
+        </app-chatroom>
       </ng-template>
       
     </div>

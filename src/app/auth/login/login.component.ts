@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     this.isLoading = true;
+    this.isLoginFailed = false
     this.authService.login(form.value.phone, form.value.password).subscribe(
       data => {
         this.tokenStorage.saveToken(data.token);
@@ -47,10 +48,6 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
       }
     );
-  }
-
-  reloadPage(): void {
-    window.location.reload();
   }
 
 }

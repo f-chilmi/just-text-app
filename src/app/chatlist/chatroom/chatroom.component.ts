@@ -17,6 +17,8 @@ export class ChatroomComponent implements OnInit {
   @Input() myId;
   @Input() activeContactId;
 
+  @Output() sendChat = new EventEmitter<{data: string, fromUserId: string, toUserId: string, contactId: string}>();
+
   constructor(
     private chat: ChatService
   ) { }
@@ -28,7 +30,7 @@ export class ChatroomComponent implements OnInit {
     this.message = event.target.value;
   }
 
-  sendChat() {
+  send() {
     const sendData = {
       "data": this.message,
       "fromUserId" : this.myId,
@@ -36,8 +38,7 @@ export class ChatroomComponent implements OnInit {
       "contactId" : this.activeId
     };
     this.message = ''
-    this.chat.send(sendData)
-    this.chat.send(sendData)
+    this.sendChat.emit(sendData)
   }
 
 }
