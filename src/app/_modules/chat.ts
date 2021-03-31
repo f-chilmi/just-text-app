@@ -1,4 +1,5 @@
 export interface Chat {
-  phone: string,
-  message: string
+  contactId: string,
+  message: string,
+  senderId: string
 }

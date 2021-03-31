@@ -7,7 +7,11 @@
 
     <div 
       class="text-wrapper d-flex flex-column justify-content-center" 
-      (click)="selectList.emit({id: message._id, name: message.usersInfo[0]._id === myId ? message.usersInfo[1].name : message.usersInfo[0].name})" 
+      (click)="selectList.emit({
+        id: message._id, 
+        name: message.usersInfo[0]._id === myId ? message.usersInfo[1].name : message.usersInfo[0].name,
+        contactId: message.usersInfo[0]._id === myId ? message.usersInfo[1]._id : message.usersInfo[0]._id
+      })" 
     >
       <ng-container *ngIf="message.usersInfo[0]._id === myId; else anotherId">
         <p class="sender-name"> {{message.usersInfo[1].name}}</p>

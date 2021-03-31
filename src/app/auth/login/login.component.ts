@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
-import { TokenStorageService } from '../_services/token-storage.service';
+import { AuthService } from '../../_services/auth.service';
+import { TokenStorageService } from '../../_services/token-storage.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
+  isLoading = false;
 
   constructor(
     private authService: AuthService,
@@ -29,6 +30,8 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    this.isLoading = true;
+    this.isLoginFailed = false
     this.authService.login(form.value.phone, form.value.password).subscribe(
       data => {
         this.tokenStorage.saveToken(data.token);
@@ -37,16 +40,14 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.router.navigate(['chat']);
+        this.isLoading = false;
       },
       err => {
         this.errorMessage = err.error.error;
         this.isLoginFailed = true;
+        this.isLoading = false;
       }
     );
-  }
-
-  reloadPage(): void {
-    window.location.reload();
   }
 
 }

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { TokenStorageService } from './token-storage.service';
 
 import { Chat } from '../_modules/chat'
-import { stringify } from '@angular/compiler/src/util';
 
 const URL = environment.URL
 
@@ -16,7 +15,7 @@ export class ChatService {
 
   constructor(
     private http: HttpClient,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
   ) { }
 
   httpHeader = {
