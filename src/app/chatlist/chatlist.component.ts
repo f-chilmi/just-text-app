@@ -27,6 +27,8 @@ export class ChatlistComponent implements OnInit {
   activeUser: string = '';
   activeId: string = '';
   activeContactId: string = '';
+  myName: string = '';
+  myPhone: string = '';
 
   private websocketUrl= new WebSocket(`wss://guarded-woodland-57057.herokuapp.com/ws/${this.userId}?access_token=${this.tokenStorage.getToken()}`);
 
@@ -41,6 +43,9 @@ export class ChatlistComponent implements OnInit {
     this.user.getContact().subscribe(val => {
       this.contactMessage = val['data']
     })
+
+    this.myName = this.tokenStorage.getUser().name
+    this.myPhone = this.tokenStorage.getUser().phone
 
     if (!this.tokenStorage.getToken()) {
       this.router.navigate(['/'])
@@ -64,9 +69,19 @@ export class ChatlistComponent implements OnInit {
       const message = val[0].data
       const contact_id = val[0].contact_id
       const incomingChat = { contact_id, message, sender_id }
+      const created_at = val[0].CreatedAt
       this.activeRoom['data'] = [ incomingChat, ...this.activeRoom['data'] ]
+      console.log(val)
+      console.log(this.activeRoom)
     }
-      
+
+    
+
+    // this.activeRoom.sort(function(a, b){
+    //   if(a.date > b.date) return -1;
+    //   if(a.date < b.date) return 1;
+    // return 0;
+    // })
   }
 
   selectList($event) {
