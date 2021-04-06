@@ -24,6 +24,7 @@ export class ChatroomComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.activeRoom)
   }
 
   onKey(event: any) {

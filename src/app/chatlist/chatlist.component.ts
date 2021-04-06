@@ -39,7 +39,7 @@ export class ChatlistComponent implements OnInit {
 
   ngOnInit(): void {
     this.user.getContact().subscribe(val => {
-      this.contactMessage = val
+      this.contactMessage = val['data']
     })
 
     if (!this.tokenStorage.getToken()) {

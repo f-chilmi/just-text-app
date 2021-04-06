@@ -14,13 +14,15 @@
     <div class="right">
 
       <ng-container *ngIf="activeRoom === undefined; else roomIsActive">
-        <div>No room selected</div>
+        <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+          No room selected
+        </div>
       </ng-container>
 
       <ng-template #roomIsActive>
         <app-contact-name [activeUser]="activeUser" ></app-contact-name>
         <app-chatroom 
-          [activeRoom]="activeRoom" 
+          [activeRoom]="activeRoom.data" 
           [activeId]="activeId" 
           [activeContactId]="activeContactId" 
           [myId]="userId" 
