@@ -60,11 +60,11 @@ export class ChatlistComponent implements OnInit {
     }
 
     const listen = (val) => {
-      const senderId = val[0].fromUserId
+      const sender_id = val[0].from_user_id
       const message = val[0].data
-      const contactId = val[0].contactId
-      const incomingChat = { contactId, message, senderId }
-      this.activeRoom = [ incomingChat, ...this.activeRoom ]
+      const contact_id = val[0].contact_id
+      const incomingChat = { contact_id, message, sender_id }
+      this.activeRoom['data'] = [ incomingChat, ...this.activeRoom['data'] ]
     }
       
   }
@@ -79,12 +79,6 @@ export class ChatlistComponent implements OnInit {
   sendChat($event) {
     const conn = this.websocketUrl
     conn.send(JSON.stringify($event))
-
-    // const senderId = $event.fromUserId
-    // const message = $event.data
-    // const contactId = $event.contactId
-    // const incomingChat = { contactId, message, senderId }
-    // this.activeRoom = [ incomingChat, ...this.activeRoom ]
   }
 
   getContact() {
