@@ -9,6 +9,7 @@ import { ContactNameComponent } from './contact-name/contact-name.component';
 import { ListChatComponent } from './list-chat/list-chat.component';
 import { NewChatComponent } from './new-chat/new-chat.component';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -18,12 +19,13 @@ import { NewChatComponent } from './new-chat/new-chat.component';
     ListChatComponent,
     ContactNameComponent,
     ChatroomComponent,
-    NewChatComponent
+    NewChatComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    NgbModule,
     RouterModule.forChild([
       { path: '', component: ChatlistComponent },
     ]),

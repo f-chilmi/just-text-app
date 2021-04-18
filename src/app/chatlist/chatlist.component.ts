@@ -71,18 +71,9 @@ export class ChatlistComponent implements OnInit {
       const incomingChat = { contact_id, message, sender_id }
       const created_at = val[0].CreatedAt
       this.activeRoom['data'] = [ incomingChat, ...this.activeRoom['data'] ]
-      console.log(val)
-      console.log(this.activeRoom)
     }
-
-    
-
-    // this.activeRoom.sort(function(a, b){
-    //   if(a.date > b.date) return -1;
-    //   if(a.date < b.date) return 1;
-    // return 0;
-    // })
   }
+
 
   selectList($event) {
     this.activeUser = $event.name
@@ -100,8 +91,10 @@ export class ChatlistComponent implements OnInit {
     this.user.getContact().subscribe(val => console.log('contact', val))
   }
 
-  newChat() {
-    this.chat.newChat('081111111111', 'HI').subscribe(val => console.log(val))
+  refresh($event) {
+    this.user.getContact().subscribe(val => {
+      this.contactMessage = val['data']
+    })
   }
 
 }

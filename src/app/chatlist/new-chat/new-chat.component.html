@@ -1,25 +1,45 @@
-<input
+<!-- <input
   type='search'
   class='form-control bg-white search mb-3 mt-1'
   placeholder='Search phone'
-/>
-<!-- <button type="button" mat-raised-button color="primary" (click)="modalShow = true">
-  Basic button
-</button>
-<div class="modal fade" aria-hidden="true" >
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" >Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+/> -->   
+<div>
+  <button class="btn w-100 btn-outline-primary btn-sm my-2" (click)="open(mymodal)">Send new message</button>
+</div>
+   
+<ng-template #mymodal let-modal class="fit-content">
+  <div class="modal-body fit-content">
+    
+    <div
+      name="form"
+      class="p-2 w-100"
+    > 
+      <div class="mb-4 auth-input form-group">
+        <input
+          type="text" 
+          class="form-control w-100" 
+          id="phone"
+          name="phone"
+          [(ngModel)]="form.phone"
+          required
+          placeholder="Phone"
+        >
       </div>
-      <div class="modal-body">
-        ...
+      <div class="mb-4 auth-input form-group">
+        <textarea
+          type="text"
+          class="form-control w-100"
+          placeholder="Type message here"
+          name="message"
+          [(ngModel)]="form.message"
+          required
+        ></textarea>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Send</button>
+
     </div>
+
+
   </div>
-</div> -->
+</ng-template>
