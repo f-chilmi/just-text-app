@@ -1,10 +1,12 @@
 <div class="my-card">
-  <p class="auth-title mb-2">Chat</p>
+  <p class="auth-title mb-2">{{ myName }} 
+    <span style="font-size: small; font-weight: 300;" >( {{ myPhone }} )</span>
+  </p>
   <div class="layout">
 
     <!-- left side of chat view (chatlist) -->
     <div class="left">
-      <app-new-chat></app-new-chat>
+      <app-new-chat (refresh)="refresh($event)"></app-new-chat>
       
       <app-list-chat [items]="items" [contactMessage]="contactMessage" [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
       
@@ -14,13 +16,15 @@
     <div class="right">
 
       <ng-container *ngIf="activeRoom === undefined; else roomIsActive">
-        <div>No room selected</div>
+        <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+          No room selected
+        </div>
       </ng-container>
 
       <ng-template #roomIsActive>
         <app-contact-name [activeUser]="activeUser" ></app-contact-name>
         <app-chatroom 
-          [activeRoom]="activeRoom" 
+          [activeRoom]="activeRoom.data" 
           [activeId]="activeId" 
           [activeContactId]="activeContactId" 
           [myId]="userId" 

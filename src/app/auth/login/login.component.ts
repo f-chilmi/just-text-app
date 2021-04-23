@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit {
     this.isLoginFailed = false
     this.authService.login(form.value.phone, form.value.password).subscribe(
       data => {
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data);
+        this.tokenStorage.saveToken(data.data.token);
+        this.tokenStorage.saveUser(data.data);
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
       },
       err => {
-        this.errorMessage = err.error.error;
+        this.errorMessage = err.error.message;
         this.isLoginFailed = true;
         this.isLoading = false;
       }

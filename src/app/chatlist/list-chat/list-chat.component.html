@@ -9,15 +9,15 @@
       class="text-wrapper d-flex flex-column justify-content-center" 
       (click)="selectList.emit({
         id: message._id, 
-        name: message.usersInfo[0]._id === myId ? message.usersInfo[1].name : message.usersInfo[0].name,
-        contactId: message.usersInfo[0]._id === myId ? message.usersInfo[1]._id : message.usersInfo[0]._id
+        name: message.users_info[0]._id === myId ? message.users_info[1].name : message.users_info[0].name,
+        contactId: message.users_info[0]._id === myId ? message.users_info[1]._id : message.users_info[0]._id
       })" 
     >
-      <ng-container *ngIf="message.usersInfo[0]._id === myId; else anotherId">
-        <p class="sender-name"> {{message.usersInfo[1].name}}</p>
+      <ng-container *ngIf="message.users_info[0]._id === myId; else anotherId">
+        <p class="sender-name"> {{message.users_info[1].name}}</p>
       </ng-container>
       <ng-template #anotherId>
-        <p class="sender-name"> {{message.usersInfo[0].name}}</p>
+        <p class="sender-name"> {{message.users_info[0].name}}</p>
       </ng-template>
       
     </div>

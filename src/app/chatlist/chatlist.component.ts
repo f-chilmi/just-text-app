@@ -27,6 +27,8 @@ export class ChatlistComponent implements OnInit {
   activeUser: string = '';
   activeId: string = '';
   activeContactId: string = '';
+  myName: string = '';
+  myPhone: string = '';
 
   private websocketUrl= new WebSocket(`wss://guarded-woodland-57057.herokuapp.com/ws/${this.userId}?access_token=${this.tokenStorage.getToken()}`);
 
@@ -39,8 +41,11 @@ export class ChatlistComponent implements OnInit {
 
   ngOnInit(): void {
     this.user.getContact().subscribe(val => {
-      this.contactMessage = val
+      this.contactMessage = val['data']
     })
+
+    this.myName = this.tokenStorage.getUser().name
+    this.myPhone = this.tokenStorage.getUser().phone
 
     if (!this.tokenStorage.getToken()) {
       this.router.navigate(['/'])
@@ -60,14 +65,15 @@ export class ChatlistComponent implements OnInit {
     }
 
     const listen = (val) => {
-      const senderId = val[0].fromUserId
+      const sender_id = val[0].from_user_id
       const message = val[0].data
-      const contactId = val[0].contactId
-      const incomingChat = { contactId, message, senderId }
-      this.activeRoom = [ incomingChat, ...this.activeRoom ]
+      const contact_id = val[0].contact_id
+      const incomingChat = { contact_id, message, sender_id }
+      const created_at = val[0].CreatedAt
+      this.activeRoom['data'] = [ incomingChat, ...this.activeRoom['data'] ]
     }
-      
   }
+
 
   selectList($event) {
     this.activeUser = $event.name
@@ -79,20 +85,16 @@ export class ChatlistComponent implements OnInit {
   sendChat($event) {
     const conn = this.websocketUrl
     conn.send(JSON.stringify($event))
-
-    // const senderId = $event.fromUserId
-    // const message = $event.data
-    // const contactId = $event.contactId
-    // const incomingChat = { contactId, message, senderId }
-    // this.activeRoom = [ incomingChat, ...this.activeRoom ]
   }
 
   getContact() {
     this.user.getContact().subscribe(val => console.log('contact', val))
   }
 
-  newChat() {
-    this.chat.newChat('081111111111', 'HI').subscribe(val => console.log(val))
+  refresh($event) {
+    this.user.getContact().subscribe(val => {
+      this.contactMessage = val['data']
+    })
   }
 
 }

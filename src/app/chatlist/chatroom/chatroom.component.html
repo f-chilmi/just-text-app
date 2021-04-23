@@ -4,7 +4,7 @@
     
   <div *ngIf="activeRoom!==undefined">
     <div *ngFor="let chat of activeRoom" >
-      <ng-container *ngIf="chat.senderId === myId; else imNotSender">
+      <ng-container *ngIf="chat.sender_id === myId; else imNotSender">
         <div class="d-block">
           <div class="balloon-right">
             <p class="right-chat"> {{chat.message}} </p>
