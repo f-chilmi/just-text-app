@@ -5,6 +5,8 @@ import { ChatMessage } from '../_models/chatMessage24';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from '../../environments/environment';
 import { Chat } from '../_models/chats24';
+import { ListMessage } from '../_models/listMessage24';
+import { UserService } from './user.service';
 
 const URL = environment.URL
 
@@ -16,11 +18,13 @@ export class WebsocketService {
 
   websocket: WebSocket;
   chatMessages: ChatMessage[] = [];
+  listMessage: ListMessage[] = [];
   userId: string = this.tokenStorage.getUser()._id;
 
   constructor(
     private http: HttpClient,
     private tokenStorage: TokenStorageService,
+    private user: UserService
   ) { }
 
   httpHeader = {
@@ -43,12 +47,13 @@ export class WebsocketService {
         const formatted = JSON.parse(element)
         return formatted
       });
-      const from_user_id: string = newMessage[0].from_user_id
-      const to_user_id: string = newMessage[0].to_user_id
-      const data: string = newMessage[0].data
-      const contact_id: string = newMessage[0].contact_id
-      const created_at: string = newMessage[0].created_at
-      const incomingChat = { contact_id, message: data, sender_id: from_user_id, created_at }
+
+      const incomingChat = { 
+        contact_id: newMessage[0].contact_id, 
+        message: newMessage[0].data, 
+        sender_id: newMessage[0].from_user_id, 
+        created_at: newMessage[0].CreatedAt
+      }
       this.chatMessages.push(incomingChat);
       console.log('onmessage: ', this.chatMessages)
     }
@@ -82,7 +87,20 @@ export class WebsocketService {
 
   public sendNewChat (phone: string, message: string) {
     this.chatMessages = []
-    this.newChat(phone, message).subscribe()
+    this.newChat(phone, message).subscribe(val => {
+      this.refresh();
+    })
+  }
+
+  public refresh() {
+    this.chatMessages = [];
+    // this.listMessage = [];
+    this.user.getListMessage().subscribe(val => {
+      const data = val['data']
+      data.forEach(element => {
+        this.listMessage.push(element);
+      });
+    })
   }
 
   public closeWebSocket () {

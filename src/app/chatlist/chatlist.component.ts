@@ -27,8 +27,7 @@ export class ChatlistComponent implements OnInit, OnDestroy {
   myName: string = '';
   myPhone: string = '';
 
-  chatMessages: ChatMessage[] = [];
-  listMessage: ListMessage[] = [];
+  listMessage = this.websocketService.listMessage;
 
   constructor(
     private tokenStorage: TokenStorageService,
@@ -39,12 +38,13 @@ export class ChatlistComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.user.getListMessage().subscribe(val => {
-      const data = val['data']
-      data.forEach(element => {
-        this.listMessage.push(element);
-      });
-    })
+    // this.user.getListMessage().subscribe(val => {
+    //   const data = val['data']
+    //   data.forEach(element => {
+    //     this.listMessage.push(element);
+    //   });
+    // })
+    this.websocketService.refresh();
 
     this.myName = this.tokenStorage.getUser().name
     this.myPhone = this.tokenStorage.getUser().phone
@@ -70,15 +70,6 @@ export class ChatlistComponent implements OnInit, OnDestroy {
 
   sendChat($event) {
     this.websocketService.sendMessage($event)
-  }
-
-  refresh($event) {
-    this.user.getListMessage().subscribe(val => {
-      const data = val['data']
-      data.forEach(element => {
-        this.listMessage.push(element);
-      });
-    })
   }
 
 }

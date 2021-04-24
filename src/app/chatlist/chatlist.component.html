@@ -6,7 +6,7 @@
 
     <!-- left side of chat view (chatlist) -->
     <div class="left">
-      <app-new-chat (refresh)="refresh($event)"></app-new-chat>
+      <app-new-chat ></app-new-chat>
       
       <app-list-chat [listMessage]="listMessage" [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
       
@@ -14,7 +14,7 @@
 
     <!-- right side of chat view (chatroom) -->
     <div class="right">
-      
+
       <ng-container *ngIf="!websocketService.chatMessages.length; else roomIsActive">
         <div class="h-100 w-100 d-flex align-items-center justify-content-center">
           No room selected
