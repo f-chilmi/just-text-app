@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ChatService } from 'src/app/_services/chat.service';
 import { Output, EventEmitter } from "@angular/core";
+import { WebsocketService } from 'src/app/_services/websocket.service';
 
 @Component({
   selector: 'app-new-chat',
@@ -23,7 +24,7 @@ export class NewChatComponent implements OnInit {
   
   constructor(
     private modalService: NgbModal,
-    private chat: ChatService,
+    public websocketService: WebsocketService
     ) {}
 
   ngOnInit(): void {
@@ -34,28 +35,33 @@ export class NewChatComponent implements OnInit {
       const { phone, message } = this.form;
       // this.closeResult = `Closed with: ${res}`;
       this.isLoading = true;
-      this.chat.newChat(phone, message).subscribe(
-        data => {
-          this.isLoading = false;
-          new this.refresh()
-        },
-        err => {
-          this.errorMessage = err.error.error;
-          this.isLoading = false;
-        }
-      )
+      this.websocketService.sendNewChat(phone, message);
+      // this.chat.newChat(phone, message).subscribe(
+      //   data => {
+      //     this.isLoading = false;
+      //     new this.refresh()
+      //   },
+      //   err => {
+      //     this.errorMessage = err.error.error;
+      //     this.isLoading = false;
+      //   }
+      // )
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
   
   private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
+    switch (reason) {
+      case ModalDismissReasons.ESC: {
+        return 'by pressing ESC';
+      }
+      case ModalDismissReasons.BACKDROP_CLICK: {
+        return 'by clicking on a backdrop';
+      }
+      default: {
+        return `with ${reason}`
+      }
     }
   }
 

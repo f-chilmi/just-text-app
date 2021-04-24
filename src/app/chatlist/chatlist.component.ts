@@ -5,8 +5,6 @@ import { UserService } from '../_services/user.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { ChatService } from '../_services/chat.service';
-import { Contact } from '../_modules/contact';
-import { Chat } from '../_modules/chat';
 import { WebsocketService } from '../_services/websocket.service';
 import { ChatMessage } from '../_models/chatMessage24';
 import { ListMessage } from '../_models/listMessage24';

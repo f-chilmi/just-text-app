@@ -4,8 +4,6 @@ import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { TokenStorageService } from './token-storage.service';
 
-import { Chat } from '../_modules/chat'
-
 const URL = environment.URL
 
 @Injectable({
@@ -29,7 +27,7 @@ export class ChatService {
     return this.http.get<any>(URL + `chat/${id}/nil`, this.httpHeader)
   }
   
-  newChat(phone: string, message: string): Observable<Chat> {
-    return this.http.post<Chat>(URL + 'new_chat', { phone, message }, this.httpHeader)
-  }
+  // newChat(phone: string, message: string): Observable<Chat> {
+  //   return this.http.post<Chat>(URL + 'new_chat', { phone, message }, this.httpHeader)
+  // }
 }
