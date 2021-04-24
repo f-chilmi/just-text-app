@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { UserService } from '../_services/user.service';
@@ -8,6 +8,8 @@ import { ChatService } from '../_services/chat.service';
 import { Contact } from '../_modules/contact';
 import { Chat } from '../_modules/chat';
 import { WebsocketService } from '../_services/websocket.service';
+import { ChatMessage } from '../_models/chatMessage24';
+import { ListMessage } from '../_models/listMessage24';
 
 const URL = `${environment.URL}`
 
@@ -18,11 +20,8 @@ const URL = `${environment.URL}`
   providers: [WebsocketService, ChatService]
 })
 
-export class ChatlistComponent implements OnInit {
-  items = [0, 1, 2, 3, 4,5, 6, 7, 8, 9];
-  contactMessage: Contact;
-  postNewChat: Chat;
-  activeRoom: Array<object>;
+export class ChatlistComponent implements OnInit, OnDestroy {
+  
   userId: number = this.tokenStorage.getUser()._id;
   activeUser: string = '';
   activeId: string = '';
@@ -30,18 +29,23 @@ export class ChatlistComponent implements OnInit {
   myName: string = '';
   myPhone: string = '';
 
-  private websocketUrl= new WebSocket(`wss://guarded-woodland-57057.herokuapp.com/ws/${this.userId}?access_token=${this.tokenStorage.getToken()}`);
+  chatMessages: ChatMessage[] = [];
+  listMessage: ListMessage[] = [];
 
   constructor(
     private tokenStorage: TokenStorageService,
     private router: Router,
     private user: UserService,
-    private chat: ChatService,
+
+    public websocketService: WebsocketService
   ) { }
 
   ngOnInit(): void {
-    this.user.getContact().subscribe(val => {
-      this.contactMessage = val['data']
+    this.user.getListMessage().subscribe(val => {
+      const data = val['data']
+      data.forEach(element => {
+        this.listMessage.push(element);
+      });
     })
 
     this.myName = this.tokenStorage.getUser().name
@@ -51,27 +55,11 @@ export class ChatlistComponent implements OnInit {
       this.router.navigate(['/'])
     }
 
-    const conn = this.websocketUrl
-    conn.onclose = function () {
-      console.log("Connection closed.");
-    }
-    conn.onmessage = function(evt) {
-      let messages = evt.data.split('\n');
-      const newMessage = messages.map(element => {
-        const formatted = JSON.parse(element)
-        return formatted
-      });
-      listen(newMessage)
-    }
+    this.websocketService.openWebSocket();
+  }
 
-    const listen = (val) => {
-      const sender_id = val[0].from_user_id
-      const message = val[0].data
-      const contact_id = val[0].contact_id
-      const incomingChat = { contact_id, message, sender_id }
-      const created_at = val[0].CreatedAt
-      this.activeRoom['data'] = [ incomingChat, ...this.activeRoom['data'] ]
-    }
+  ngOnDestroy(): void {
+    this.websocketService.closeWebSocket();
   }
 
 
@@ -79,21 +67,19 @@ export class ChatlistComponent implements OnInit {
     this.activeUser = $event.name
     this.activeId = $event.id
     this.activeContactId = $event.contactId
-    this.chat.getChat($event.id).subscribe(val => this.activeRoom = val)
+    this.websocketService.subscribeChat($event.id);
   }
 
   sendChat($event) {
-    const conn = this.websocketUrl
-    conn.send(JSON.stringify($event))
-  }
-
-  getContact() {
-    this.user.getContact().subscribe(val => console.log('contact', val))
+    this.websocketService.sendMessage($event)
   }
 
   refresh($event) {
-    this.user.getContact().subscribe(val => {
-      this.contactMessage = val['data']
+    this.user.getListMessage().subscribe(val => {
+      const data = val['data']
+      data.forEach(element => {
+        this.listMessage.push(element);
+      });
     })
   }
 
