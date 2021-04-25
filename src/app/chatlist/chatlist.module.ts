@@ -9,7 +9,7 @@ import { ContactNameComponent } from './contact-name/contact-name.component';
 import { ListChatComponent } from './list-chat/list-chat.component';
 import { NewChatComponent } from './new-chat/new-chat.component';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 
 
@@ -28,6 +28,7 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
+    // NgbModalRef,
     RouterModule.forChild([
       { path: '', component: ChatlistComponent },
     ]),

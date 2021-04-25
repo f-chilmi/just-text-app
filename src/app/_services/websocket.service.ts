@@ -29,6 +29,7 @@ export class WebsocketService {
 
   loadingSendNewMsg: boolean = false;
   errorSendNewMsg: string = '';
+  successSend: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -102,11 +103,14 @@ export class WebsocketService {
   }
 
   public sendNewChat (phone: string, message: string) {
-    this.chatMessages = []
+    this.loadingSendNewMsg = true;
+    this.chatMessages = [];
+    this.successSend = false;
     this.newChat(phone, message).subscribe(
       val => {
         this.refresh();
         this.loadingSendNewMsg = false;
+        this.successSend = true;
       },
       err => {
         this.loadingSendNewMsg = false;
@@ -118,12 +122,14 @@ export class WebsocketService {
   public refresh() {
     this.chatMessages = [];
     this.loadingChatList = true;
+    const newList = []
     this.user.getListMessage().subscribe(
       val => {
         const data = val['data']
         data.forEach(element => {
-          this.listMessage.push(element);
+          newList.push(element);
         });
+        this.listMessage = newList;
         this.loadingChatList = false;
       },
       err => {

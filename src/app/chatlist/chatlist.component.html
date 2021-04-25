@@ -13,7 +13,7 @@
         <loading-list></loading-list>
       </ng-container>
       <ng-template #room>
-        <app-list-chat [listMessage]="listMessage" [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
+        <app-list-chat [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
       </ng-template>
       
     </div>
