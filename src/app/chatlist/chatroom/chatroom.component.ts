@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { Input, Output, EventEmitter } from "@angular/core";
-import { FormGroup, NgForm } from '@angular/forms';
-import { ChatService } from 'src/app/_services/chat.service';
 import { WebsocketService } from 'src/app/_services/websocket.service';
 
 @Component({
@@ -9,7 +7,9 @@ import { WebsocketService } from 'src/app/_services/websocket.service';
   templateUrl: './chatroom.component.html',
   styleUrls: ['./chatroom.component.css']
 })
-export class ChatroomComponent implements OnInit {
+export class ChatroomComponent implements OnInit, AfterViewChecked {
+  @ViewChild('scrollBottom') scrollBottom: ElementRef;
+
   message: string = '';
 
   [x: string]: any;
@@ -25,6 +25,11 @@ export class ChatroomComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // this.scrollToBottom();
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
   }
 
   onKey(event: any) {
@@ -51,5 +56,14 @@ export class ChatroomComponent implements OnInit {
     this.message = ''
     this.sendChat.emit(sendData)
   }
+
+  scrollToBottom(): void {
+    try {
+      this.scrollBottom.nativeElement.scrollIntoView({ behavior: 'smooth', block: "start" })
+
+    } catch(err) {
+      console.log('error scroll to bottom:', err)
+    }
+  };
 
 }
