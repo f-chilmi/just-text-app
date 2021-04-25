@@ -80,3 +80,9 @@ textarea {
 .form-control:focus {
   box-shadow: none;
 }
+
+.time-chatRoom {
+  font-size: 10px;
+  text-align: end;
+  color: #b9bcc3;
+}

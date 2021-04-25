@@ -3,9 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { TokenStorageService } from './token-storage.service';
-import { catchError, map, tap } from 'rxjs/operators';
-
-import { Contact } from '../_modules/contact';
+import { ListMessage } from '../_models/listMessage24';
 
 const URL = environment.URL
 
@@ -19,13 +17,13 @@ export class UserService {
     private tokenStorage: TokenStorageService
   ) { }
 
-  getContact(): Observable<Contact> {
+  getListMessage(): Observable<ListMessage> {
     const httpHeader = {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${this.tokenStorage.getToken()}`
       })
     }
-    return this.http.get<Contact>(URL + 'contact', httpHeader)
+    return this.http.get<ListMessage>(URL + 'contact', httpHeader)
   }
 
 }

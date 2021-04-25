@@ -7,7 +7,7 @@
   <button class="btn w-100 btn-outline-primary btn-sm my-2" (click)="open(mymodal)">Send new message</button>
 </div>
    
-<ng-template #mymodal let-modal class="fit-content">
+<ng-template #mymodal let-modal class="fit-content" >
   <div class="modal-body fit-content">
     
     <div
@@ -36,7 +36,14 @@
         ></textarea>
       </div>
 
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Send</button>
+      <button type="button" class="btn btn-outline-dark" (click)="submit()">
+        <ng-container *ngIf="websocketService.loadingSendNewMsg">
+          <div class="spinner-border text-secondary" size="sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </ng-container>
+        Send
+      </button>
 
     </div>
 

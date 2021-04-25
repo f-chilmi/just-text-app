@@ -1,30 +1,55 @@
 <div class="my-card">
-  <p class="auth-title mb-2">{{ myName }} 
+  <!-- <p class="auth-title mb-2">{{ myName }} 
     <span style="font-size: small; font-weight: 300;" >( {{ myPhone }} )</span>
-  </p>
+  </p> -->
   <div class="layout">
 
     <!-- left side of chat view (chatlist) -->
     <div class="left">
-      <app-new-chat (refresh)="refresh($event)"></app-new-chat>
-      
-      <app-list-chat [items]="items" [contactMessage]="contactMessage" [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
+      <div class="d-flex">
+        <div class="auth-title mb-2">{{ myName }} 
+          <span style="font-size: small; font-weight: 300;" >( {{ myPhone }} )</span>
+          
+        </div>
+        <div style="text-align: end; margin-left: auto;" >
+          <button class="button-logout" (click)="logout()" >
+            <i class="material-icons">power_settings_new</i>
+          </button>
+        </div>
+      </div>
+
+      <app-new-chat ></app-new-chat>
+
+      <ng-container *ngIf="websocketService.loadingChatList;else room">
+        <!-- loading indicator when chat list rendering -->
+        <loading-list></loading-list>
+      </ng-container>
+      <ng-template #room>
+        <app-list-chat [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
+      </ng-template>
       
     </div>
 
     <!-- right side of chat view (chatroom) -->
-    <div class="right">
+    <div class="right h-100">
 
-      <ng-container *ngIf="activeRoom === undefined; else roomIsActive">
-        <div class="h-100 w-100 d-flex align-items-center justify-content-center">
-          No room selected
-        </div>
+      <ng-container *ngIf="!websocketService.chatMessages.length; else roomIsActive">
+        <!-- when selected chat from chatlist and still loading -->
+        <ng-container *ngIf="websocketService.loadingRoom;else noRoomSelected">
+          <loading-list></loading-list>
+        </ng-container>
+        
+        <ng-template #noRoomSelected>
+          <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+            No room selected
+          </div>
+        </ng-template>
       </ng-container>
 
       <ng-template #roomIsActive>
         <app-contact-name [activeUser]="activeUser" ></app-contact-name>
         <app-chatroom 
-          [activeRoom]="activeRoom.data" 
+          [chatMessage]="chatMessage" 
           [activeId]="activeId" 
           [activeContactId]="activeContactId" 
           [myId]="userId" 
