@@ -57,6 +57,10 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
     this.sendChat.emit(sendData)
   }
 
+  loadMore() {
+    this.websocketService.loadMore(this.activeId, this.websocketService.firstChatId)
+  }
+
   scrollToBottom(): void {
     try {
       this.scrollBottom.nativeElement.scrollIntoView({ behavior: 'smooth', block: "start" })

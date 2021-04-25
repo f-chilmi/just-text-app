@@ -19,6 +19,7 @@ export class WebsocketService {
 
   websocket: WebSocket;
   chatMessages: ChatMessage[] = [];
+  firstChatId: any;
   listMessage: ListMessage[] = [];
   userId: string = this.tokenStorage.getUser()._id;
 
@@ -31,6 +32,8 @@ export class WebsocketService {
   loadingSendNewMsg: boolean = false;
   errorSendNewMsg: string = '';
   successSend: boolean = false;
+
+  loadingLoadMore: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -58,6 +61,7 @@ export class WebsocketService {
         const formatted = JSON.parse(element)
         return formatted
       });
+      console.log(newMessage)
 
       const incomingChat = { 
         contact_id: newMessage[0].contact_id, 
@@ -79,19 +83,43 @@ export class WebsocketService {
   }
 
   public subscribeChat (id: number) {
-    this.chatMessages = []
+    this.chatMessages = [];
     this.loadingRoom = true;
-    const newMessage = []
+    const newMessage = [];
     this.getChat(id).subscribe(
       val => {
         val.data.forEach(el => {
           newMessage.push(el);
         });
         this.chatMessages = orderBy(newMessage, ['created_at'], ['asc'])
+        this.firstChatId = orderBy(newMessage, ['created_at'], ['asc'])[0]._id
         this.loadingRoom = false;
       },
       err => {
         this.loadingRoom = false;
+        this.errorRoom = err.error.error;
+      }
+    )
+  }
+
+  public loadMoreChat(idContact: number, idChat: number): Observable<any> {
+    return this.http.get<any>(URL + `chat/${idContact}/${idChat}`, this.httpHeader)
+  }
+
+  public loadMore (idContact: number, idChat: number) {
+    this.loadingLoadMore = true;
+    const newMessage = this.chatMessages;
+    this.loadMoreChat(idContact, idChat).subscribe(
+      val => {
+        val.data.forEach(el => {
+          newMessage.push(el);
+        });
+        this.firstChatId = orderBy(newMessage, ['created_at'], ['asc'])[0]._id;
+        this.chatMessages = orderBy(newMessage, ['created_at'], ['asc']);
+        this.loadingLoadMore = false;
+      },
+      err => {
+        this.loadingLoadMore = false;
         this.errorRoom = err.error.error;
       }
     )
