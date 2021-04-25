@@ -10,7 +10,8 @@
     <ng-container *ngIf="chat.sender_id === myId; else imNotSender">
       <div class="d-block">
         <div class="balloon-right">
-          <p class="right-chat"> {{chat.message}} </p>
+          <p class="right-chat mb-0"> {{chat.message}} </p>
+          <div class="time-chatRoom">{{time(chat.created_at)}}</div>
         </div>
       </div>
     </ng-container>
@@ -18,6 +19,7 @@
       <div class="d-block">
         <div class="balloon-left">
           <p class="left-chat"> {{chat.message}} </p>
+          <div class="time-chatRoom">{{time(chat.created_at)}}</div>
         </div>
       </div>
     </ng-template>

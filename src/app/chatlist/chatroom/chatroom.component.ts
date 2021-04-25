@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { Input, Output, EventEmitter } from "@angular/core";
 import { WebsocketService } from 'src/app/_services/websocket.service';
+import { ComplexTime } from 'src/app/_helpers/time';
 
 @Component({
   selector: 'app-chatroom',
@@ -69,5 +70,9 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
       console.log('error scroll to bottom:', err)
     }
   };
+
+  time(time) {
+    return ComplexTime(time)
+  }
 
 }

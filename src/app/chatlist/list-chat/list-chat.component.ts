@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Input, Output, EventEmitter } from "@angular/core";
 import { WebsocketService } from 'src/app/_services/websocket.service';
+import { ComplexTime } from 'src/app/_helpers/time';
 
 @Component({
   selector: 'app-list-chat',
@@ -18,6 +19,10 @@ export class ListChatComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  time(time) {
+    return ComplexTime(time)
   }
 
 }
