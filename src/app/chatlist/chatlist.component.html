@@ -7,18 +7,31 @@
     <!-- left side of chat view (chatlist) -->
     <div class="left">
       <app-new-chat ></app-new-chat>
-      
-      <app-list-chat [listMessage]="listMessage" [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
+
+      <ng-container *ngIf="websocketService.loadingChatList;else room">
+        <!-- loading indicator when chat list rendering -->
+        <loading-list></loading-list>
+      </ng-container>
+      <ng-template #room>
+        <app-list-chat [listMessage]="listMessage" [myId]="userId" (selectList)="selectList($event)" ></app-list-chat>
+      </ng-template>
       
     </div>
 
     <!-- right side of chat view (chatroom) -->
-    <div class="right">
+    <div class="right h-100">
 
       <ng-container *ngIf="!websocketService.chatMessages.length; else roomIsActive">
-        <div class="h-100 w-100 d-flex align-items-center justify-content-center">
-          No room selected
-        </div>
+        <!-- when selected chat from chatlist and still loading -->
+        <ng-container *ngIf="websocketService.loadingRoom;else noRoomSelected">
+          <loading-list></loading-list>
+        </ng-container>
+        
+        <ng-template #noRoomSelected>
+          <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+            No room selected
+          </div>
+        </ng-template>
       </ng-container>
 
       <ng-template #roomIsActive>

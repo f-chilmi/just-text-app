@@ -21,6 +21,15 @@ export class WebsocketService {
   listMessage: ListMessage[] = [];
   userId: string = this.tokenStorage.getUser()._id;
 
+  loadingChatList: boolean = false;
+  errorChatList: string = '';
+
+  loadingRoom: boolean = false;
+  errorRoom: string = '';
+
+  loadingSendNewMsg: boolean = false;
+  errorSendNewMsg: string = '';
+
   constructor(
     private http: HttpClient,
     private tokenStorage: TokenStorageService,
@@ -69,12 +78,19 @@ export class WebsocketService {
 
   public subscribeChat (id: number) {
     this.chatMessages = []
-    this.getChat(id).subscribe(val => {
-      val.data.forEach(el => {
-        this.chatMessages.push(el)
-      });
-      console.log('subscribe', this.chatMessages)
-    })
+    this.loadingRoom = true;
+    this.getChat(id).subscribe(
+      val => {
+        val.data.forEach(el => {
+          this.chatMessages.push(el);
+        });
+        this.loadingRoom = false;
+      },
+      err => {
+        this.loadingRoom = false;
+        this.errorRoom = err.error.error;
+      }
+    )
   }
 
   public sendMessage (chatMessages = ChatMessage) {
@@ -87,20 +103,34 @@ export class WebsocketService {
 
   public sendNewChat (phone: string, message: string) {
     this.chatMessages = []
-    this.newChat(phone, message).subscribe(val => {
-      this.refresh();
-    })
+    this.newChat(phone, message).subscribe(
+      val => {
+        this.refresh();
+        this.loadingSendNewMsg = false;
+      },
+      err => {
+        this.loadingSendNewMsg = false;
+        this.errorSendNewMsg = err.error.error
+      }
+    )
   }
 
   public refresh() {
     this.chatMessages = [];
-    // this.listMessage = [];
-    this.user.getListMessage().subscribe(val => {
-      const data = val['data']
-      data.forEach(element => {
-        this.listMessage.push(element);
-      });
-    })
+    this.loadingChatList = true;
+    this.user.getListMessage().subscribe(
+      val => {
+        const data = val['data']
+        data.forEach(element => {
+          this.listMessage.push(element);
+        });
+        this.loadingChatList = false;
+      },
+      err => {
+        this.loadingChatList = false;
+        this.errorChatList = err.error.error;
+      }
+    )
   }
 
   public closeWebSocket () {

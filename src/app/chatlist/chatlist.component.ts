@@ -38,12 +38,6 @@ export class ChatlistComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // this.user.getListMessage().subscribe(val => {
-    //   const data = val['data']
-    //   data.forEach(element => {
-    //     this.listMessage.push(element);
-    //   });
-    // })
     this.websocketService.refresh();
 
     this.myName = this.tokenStorage.getUser().name
