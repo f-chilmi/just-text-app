@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { Chat } from '../_models/chats24';
 import { ListMessage } from '../_models/listMessage24';
 import { UserService } from './user.service';
+import orderBy from 'lodash/orderBy'
 
 const URL = environment.URL
 
@@ -80,11 +81,13 @@ export class WebsocketService {
   public subscribeChat (id: number) {
     this.chatMessages = []
     this.loadingRoom = true;
+    const newMessage = []
     this.getChat(id).subscribe(
       val => {
         val.data.forEach(el => {
-          this.chatMessages.push(el);
+          newMessage.push(el);
         });
+        this.chatMessages = orderBy(newMessage, ['created_at'], ['asc'])
         this.loadingRoom = false;
       },
       err => {
@@ -129,7 +132,7 @@ export class WebsocketService {
         data.forEach(element => {
           newList.push(element);
         });
-        this.listMessage = newList;
+        this.listMessage = orderBy(newList, ['created_at'], ['desc']);
         this.loadingChatList = false;
       },
       err => {
