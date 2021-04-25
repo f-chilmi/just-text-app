@@ -1,11 +1,23 @@
 <div class="my-card">
-  <p class="auth-title mb-2">{{ myName }} 
+  <!-- <p class="auth-title mb-2">{{ myName }} 
     <span style="font-size: small; font-weight: 300;" >( {{ myPhone }} )</span>
-  </p>
+  </p> -->
   <div class="layout">
 
     <!-- left side of chat view (chatlist) -->
     <div class="left">
+      <div class="d-flex">
+        <div class="auth-title mb-2">{{ myName }} 
+          <span style="font-size: small; font-weight: 300;" >( {{ myPhone }} )</span>
+          
+        </div>
+        <div style="text-align: end; margin-left: auto;" >
+          <button class="button-logout" (click)="logout()" >
+            <i class="material-icons">power_settings_new</i>
+          </button>
+        </div>
+      </div>
+
       <app-new-chat ></app-new-chat>
 
       <ng-container *ngIf="websocketService.loadingChatList;else room">

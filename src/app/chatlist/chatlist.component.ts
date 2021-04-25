@@ -32,7 +32,6 @@ export class ChatlistComponent implements OnInit, OnDestroy {
   constructor(
     private tokenStorage: TokenStorageService,
     private router: Router,
-    private user: UserService,
 
     public websocketService: WebsocketService
   ) { }
@@ -64,6 +63,13 @@ export class ChatlistComponent implements OnInit, OnDestroy {
 
   sendChat($event) {
     this.websocketService.sendMessage($event)
+  }
+
+  logout() {
+    this.tokenStorage.saveToken('');
+    if (!this.tokenStorage.getToken()) {
+      this.router.navigate(['/'])
+    }
   }
 
 }

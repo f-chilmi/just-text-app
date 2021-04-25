@@ -88,7 +88,7 @@
 }
 
 .chatroom {
-  height: 86%;
+  height: 91%;
   background-color: #fafbff;
   padding: 20px;
   /* overflow: auto; */
@@ -165,4 +165,18 @@ textarea {
 
 .image-wrapper {
   height: 100px;
+}
+
+.button-logout {
+  background-color: transparent; 
+  border: none;
+  color: red;
+}
+
+.button-logout:hover {
+  opacity: 1;
+  transition: all 0.1s ease 0.5s;
+  visibility: visible;
+  content: "Logout";
+  font-size: 0.75rem;
 }
