@@ -28,7 +28,6 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
-    // NgbModalRef,
     RouterModule.forChild([
       { path: '', component: ChatlistComponent },
     ]),

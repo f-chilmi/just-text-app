@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { TokenStorageService } from './token-storage.service';
+import { HttpService } from './http.service';
 
 const URL = environment.URL
 
@@ -13,6 +14,7 @@ export class ChatService {
 
   constructor(
     private http: HttpClient,
+    private httpService: HttpService,
     private tokenStorage: TokenStorageService,
   ) { }
 
@@ -24,6 +26,6 @@ export class ChatService {
   }
 
   getChat(id: number): Observable<any> {
-    return this.http.get<any>(URL + `chat/${id}/nil`, this.httpHeader)
+    return this.httpService.get(`${URL}chat/${id}/nil`)
   }
 }

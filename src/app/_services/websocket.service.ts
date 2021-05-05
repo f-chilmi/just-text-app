@@ -8,6 +8,7 @@ import { Chat } from '../_models/chats24';
 import { ListMessage } from '../_models/listMessage24';
 import { UserService } from './user.service';
 import orderBy from 'lodash/orderBy'
+import { HttpService } from './http.service';
 
 const URL = environment.URL
 
@@ -37,6 +38,7 @@ export class WebsocketService {
 
   constructor(
     private http: HttpClient,
+    private httpService: HttpService,
     private tokenStorage: TokenStorageService,
     private user: UserService
   ) { }
@@ -78,15 +80,11 @@ export class WebsocketService {
     }
   }
 
-  public getChat(id: number): Observable<any> {
-    return this.http.get<any>(URL + `chat/${id}/nil`, this.httpHeader)
-  }
-
   public subscribeChat (id: number) {
     this.chatMessages = [];
     this.loadingRoom = true;
     const newMessage = [];
-    this.getChat(id).subscribe(
+    this.httpService.get(`${URL}chat/${id}/nil`).subscribe(
       val => {
         val.data.forEach(el => {
           newMessage.push(el);
@@ -102,14 +100,10 @@ export class WebsocketService {
     )
   }
 
-  public loadMoreChat(idContact: number, idChat: number): Observable<any> {
-    return this.http.get<any>(URL + `chat/${idContact}/${idChat}`, this.httpHeader)
-  }
-
   public loadMore (idContact: number, idChat: number) {
     this.loadingLoadMore = true;
     const newMessage = this.chatMessages;
-    this.loadMoreChat(idContact, idChat).subscribe(
+    this.httpService.get(`${URL}chat/${idContact}/${idChat}`).subscribe(
       val => {
         val.data.forEach(el => {
           newMessage.push(el);
@@ -129,15 +123,11 @@ export class WebsocketService {
     this.websocket.send(JSON.stringify(chatMessages));
   }
 
-  public newChat(phone: string, message: string): Observable<Chat> {
-    return this.http.post<Chat>(URL + 'new-chat', { phone, message }, this.httpHeader)
-  }
-
   public sendNewChat (phone: string, message: string) {
     this.loadingSendNewMsg = true;
     this.chatMessages = [];
     this.successSend = false;
-    this.newChat(phone, message).subscribe(
+    this.httpService.post(`${URL}new-chat`, { phone, message }).subscribe(
       val => {
         this.refresh();
         this.loadingSendNewMsg = false;
