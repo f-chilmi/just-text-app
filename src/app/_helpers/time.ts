@@ -1,47 +1,25 @@
-// const moment = require('moment');
 import * as moment from 'moment';
 
 const reference = moment()
-const today = reference.clone().startOf('day')
+const today = reference.clone().startOf('day').format('DD')
 const yesterday = reference
   .clone()
   .subtract(1, 'days')
   .startOf('day')
-const week = reference
-  .clone()
-  .subtract(7, 'days')
-  .startOf('day')
+  .format('DD')
 
-function isToday(time, TODAY) {
-  return moment(time).isSame(TODAY, 'd')
-}
-
-function isYesterday(time, YESTERDAY) {
-  return moment(time).isSame(YESTERDAY, 'd')
-}
-
-function isWithinAWeek(time, AWEEK) {
-  return moment(time).isAfter(AWEEK)
-}
-
-function ComplexTime(time, full = false) {
-  if (isToday(time, today)) {
-    return moment(time).format('HH:mm')
-  }
-  if (isYesterday(time, yesterday)) {
-    if (full) {
+function ComplexTime(time) {
+  switch (moment(time).format('DD')) {
+    case today: {
+      return moment(time).format('HH:mm')
+    }
+    case yesterday: {
       return `yesterday ${moment(time).format('HH:mm')}`
     }
-    return 'yesterday'
+    default: {
+      return moment(time).utcOffset(60).format('DD/MM/YYYY')
+    }
   }
-  if (isWithinAWeek(time, week)) {
-    return moment(time)
-      .utcOffset(60)
-      .format('DD/MM/YYYY')
-  }
-  return moment(time)
-    .utcOffset(60)
-    .format('DD/MM/YYYY')
 }
 
 function GetExpiredDate(expDate) {
