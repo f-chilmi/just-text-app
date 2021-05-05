@@ -19,7 +19,6 @@ const httpOptions = {
 export class AuthService {
 
   constructor(
-    private http: HttpClient,
     private httpService: HttpService
   ) { }
 

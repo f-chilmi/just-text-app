@@ -1,10 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { ChatMessage } from '../_models/chatMessage24';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from '../../environments/environment';
-import { Chat } from '../_models/chats24';
 import { ListMessage } from '../_models/listMessage24';
 import { UserService } from './user.service';
 import orderBy from 'lodash/orderBy'
@@ -37,18 +34,10 @@ export class WebsocketService {
   loadingLoadMore: boolean = false;
 
   constructor(
-    private http: HttpClient,
     private httpService: HttpService,
     private tokenStorage: TokenStorageService,
     private user: UserService
   ) { }
-
-  httpHeader = {
-    headers: new HttpHeaders({
-      'Authorization': `Bearer ${this.tokenStorage.getToken()}`,
-      'content-type': 'application/json'
-    })
-  }
 
   public openWebSocket() {
     this.websocket = new WebSocket(`wss://guarded-woodland-57057.herokuapp.com/ws/${this.userId}?access_token=${this.tokenStorage.getToken()}`);
@@ -63,7 +52,6 @@ export class WebsocketService {
         const formatted = JSON.parse(element)
         return formatted
       });
-      console.log(newMessage)
 
       const incomingChat = { 
         contact_id: newMessage[0].contact_id, 
@@ -72,7 +60,6 @@ export class WebsocketService {
         created_at: newMessage[0].CreatedAt
       }
       this.chatMessages.push(incomingChat);
-      console.log('onmessage: ', this.chatMessages)
     }
 
     this.websocket.onclose = (event) => {
