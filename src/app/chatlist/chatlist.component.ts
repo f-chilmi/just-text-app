@@ -32,7 +32,6 @@ export class ChatlistComponent implements OnInit, OnDestroy {
   constructor(
     private tokenStorage: TokenStorageService,
     private router: Router,
-
     public websocketService: WebsocketService
   ) { }
 
