@@ -36,18 +36,19 @@ export class GlobalHttpInterceptorService implements HttpInterceptor {
  
     return next.handle(req).pipe(
       catchError((error) => {
+        let errorMessage = '';
         console.log('error in intercept 2')
         console.error('error', error);
         console.log(`error status : ${error.status} ${error.statusText}`);
 
         switch (error.status) {
           case 401:      //login
-            this.router.navigateByUrl("/login");
+            this.router.navigateByUrl("/auth/login");
             console.log(`redirect to login`);
             // handled = true;
             break;
           case 403:     //forbidden
-            this.router.navigateByUrl("/login");
+            this.router.navigateByUrl("/auth/login");
             console.log(`redirect to login`);
             // handled = true;
             break;
