@@ -7,7 +7,7 @@ import {
   HttpResponse,
   HttpErrorResponse
 } from '@angular/common/http';
-import { RollbarService } from '../app.module';
+import { RollbarService } from './rollbar.service';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { TokenStorageService } from './token-storage.service';
