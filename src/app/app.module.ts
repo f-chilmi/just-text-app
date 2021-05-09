@@ -1,13 +1,35 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, Inject, Injectable, InjectionToken, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import * as Rollbar from 'rollbar'; 
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { GlobalHttpInterceptorService } from './_services/http-interceptor.service';
+import { HttpErrorInterceptor } from './_services/http-interceptor.service';
+
+const rollbarConfig = {
+  accessToken: '8ed371e89c26478f9244a3def6fca909',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+};
+
+@Injectable()
+export class RollbarErrorHandler implements ErrorHandler {
+  constructor(@Inject(RollbarService) private rollbar: Rollbar) {}
+
+  handleError(err:any) : void {
+    this.rollbar.error(err.originalError || err);
+  }
+}
+
+export function rollbarFactory() {
+  return new Rollbar(rollbarConfig);
+}
+
+export const RollbarService = new InjectionToken<Rollbar>('rollbar');
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +42,8 @@ import { GlobalHttpInterceptorService } from './_services/http-interceptor.servi
     NgbModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: GlobalHttpInterceptorService, multi: true  }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true  },
+    { provide: RollbarService, useFactory: rollbarFactory }
   ],
   bootstrap: [AppComponent]
 })

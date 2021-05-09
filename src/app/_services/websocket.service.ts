@@ -33,6 +33,8 @@ export class WebsocketService {
 
   loadingLoadMore: boolean = false;
 
+  activeId: any;
+
   constructor(
     private httpService: HttpService,
     private tokenStorage: TokenStorageService,
@@ -53,13 +55,16 @@ export class WebsocketService {
         return formatted
       });
 
-      const incomingChat = { 
-        contact_id: newMessage[0].contact_id, 
-        message: newMessage[0].data, 
-        sender_id: newMessage[0].from_user_id, 
-        created_at: newMessage[0].CreatedAt
+      if (this.activeId === newMessage[0].contact_id) {
+        const incomingChat = { 
+          contact_id: newMessage[0].contact_id, 
+          message: newMessage[0].data, 
+          sender_id: newMessage[0].from_user_id, 
+          created_at: newMessage[0].CreatedAt
+        }
+        this.chatMessages.push(incomingChat);
       }
-      this.chatMessages.push(incomingChat);
+      
     }
 
     this.websocket.onclose = (event) => {
@@ -73,6 +78,7 @@ export class WebsocketService {
     const newMessage = [];
     this.httpService.get(`${URL}chat/${id}/nil`).subscribe(
       val => {
+        this.activeId = id
         val.data.forEach(el => {
           newMessage.push(el);
         });

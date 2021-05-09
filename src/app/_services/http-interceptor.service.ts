@@ -1,68 +1,45 @@
+import { Injectable, Injector } from '@angular/core';
+import {
+  HttpEvent,
+  HttpInterceptor,
+  HttpHandler,
+  HttpRequest,
+  HttpResponse,
+  HttpErrorResponse
+} from '@angular/common/http';
+import { RollbarService } from '../app.module';
+import { Observable, throwError } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
+import { TokenStorageService } from './token-storage.service';
 
-import { Injectable, Injector } from "@angular/core";
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of, throwError } from "rxjs";
-import { catchError, retry } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { TokenStorageService } from "./token-storage.service";
- 
 @Injectable()
-export class GlobalHttpInterceptorService implements HttpInterceptor {
- 
+export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(
-    private router: Router,
+    private injector: Injector,
     private tokenService: TokenStorageService
-    ) {}
- 
+  ) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
- 
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // const token: string = "invalid token";
     const token: string = this.tokenService.getToken();
-    // const token: string = 'invald token';
-    req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + token) });
- 
-    return next.handle(req).pipe(
-      retry(1),
-      catchError((error) => {
-        let errorMessage = '';
-        let handled: boolean = false;
-        console.error(error);
-        if (error instanceof HttpErrorResponse) {
+    request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
+    return next.handle(request)
+      .pipe(
+        retry(1),
+        catchError((error: HttpErrorResponse) => {
+          const rollbar = this.injector.get(RollbarService);
+          let errorMessage = '';
           if (error.error instanceof ErrorEvent) {
-            console.error("Error Event");
+            // client-side error
             errorMessage = `Error: ${error.error.message}`;
           } else {
-            console.log(`error status : ${error.status} ${error.statusText}`);
-            switch (error.status) {
-              case 401:      //login
-                this.router.navigateByUrl("/auth/login");
-                console.log(`redirect to login`);
-                handled = true;
-                break;
-              case 403:     //forbidden
-                this.router.navigateByUrl("/auth/login");
-                console.log(`redirect to login`);
-                handled = true;
-                break;
-            }
+            // server-side error
+            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
           }
-        }
-        
-        else {
-          console.error("Other Errors");
-        }
- 
-        if (handled) {
-          console.log('return back ');
-          return of(error);
-        } else {
-          errorMessage = `Error: ${error.error.message}`;
           window.alert(errorMessage);
-          console.log('throw error back to to the subscriber');
-          return throwError(error);
-        }
- 
-      })
-    )
+          rollbar.error(error)
+          return throwError(errorMessage);
+        })
+      )
   }
 }
