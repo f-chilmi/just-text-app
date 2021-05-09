@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
+  isLoading: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -29,15 +30,17 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     const { name, phone, password } = this.form;
-    
+    this.isLoading = true;
     this.authService.register(name, phone, password).subscribe(
       data => {
         this.isSuccessful = true;
         this.isSignUpFailed = false;
+        this.isLoading = false;
       },
       err => {
         this.errorMessage = err.error.error;
         this.isSignUpFailed = true;
+        this.isLoading = false;
       }
     );
   }
