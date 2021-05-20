@@ -33,7 +33,7 @@ export class WebsocketService {
 
   loadingLoadMore: boolean = false;
 
-  activeId: any;
+  activeId: string;
 
   constructor(
     private httpService: HttpService,
@@ -72,7 +72,7 @@ export class WebsocketService {
     }
   }
 
-  public subscribeChat (id: number) {
+  public subscribeChat (id: string) {
     this.chatMessages = [];
     this.loadingRoom = true;
     const newMessage = [];
