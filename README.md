@@ -1,27 +1,40 @@
-# JustTextApp
+# JusText App
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.5.
 
-## Development server
+This repo shows an example chat application using Angular 2. The goal is to implement Real Time Messaging with Angular 2. It also features:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* Express configuration with TypeScript, and tslint
+* Use of injectables, forms, routing & navigation services in Angular 2
+* And much more
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Screenshots
+<p align="center">
+  <img src="public/angularLogin.png" alt="Login Page"/>
+</p>
+<p align="center">
+  <img src="public/home.png" alt="Login Page"/>
+</p>
+<p align="center">
+  <img src="public/chatroom.png" alt="Login Page"/>
+</p>
+  
 
-## Build
+## Quick start
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```bash
+# clone the repo
+git clone https://github.com/f-chilmi/just-text-app.git
 
-## Running unit tests
+# change into the repo directory
+cd just-text-app
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# install 
+npm install
 
-## Running end-to-end tests
+# run
+npm start
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Then visit [http://localhost:4200](http://localhost:4200) in your browser. 
