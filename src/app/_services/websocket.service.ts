@@ -145,7 +145,6 @@ export class WebsocketService {
         });
         this.listMessage = orderBy(newList, ['created_at'], ['desc']);
         this.loadingChatList = false;
-        // console.log(this.listMessage)
       },
       err => {
         this.loadingChatList = false;

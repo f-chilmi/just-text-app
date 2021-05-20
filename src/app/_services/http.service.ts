@@ -1,5 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Data } from '../_models/data';
+import { DataObj } from '../_models/dataObj';
 import { TokenStorageService } from './token-storage.service';
 
 @Injectable({
@@ -20,11 +22,15 @@ export class HttpService {
   }
 
   get(path) {
-    return this.http.get<any>(path, this.httpHeader)
+    return this.http.get<Data>(path, this.httpHeader)
   }
 
   post(path, data) {
-    return this.http.post<any>(path, data, this.httpHeader)
+    return this.http.post<Data>(path, data, this.httpHeader)
+  }
+
+  postAuth(path, data) {
+    return this.http.post<DataObj>(path, data, this.httpHeader)
   }
   
 }

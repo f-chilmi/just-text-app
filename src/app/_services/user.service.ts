@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { ListMessage } from '../_models/listMessage24';
+import { Data } from '../_models/data';
 import { HttpService } from './http.service';
 
 const URL = environment.URL
@@ -15,7 +15,7 @@ export class UserService {
     private httpService: HttpService
   ) { }
 
-  getListMessage(): Observable<ListMessage> {
+  getListMessage(): Observable<Data> {
     return this.httpService.get(`${URL}contact`)
   }
 

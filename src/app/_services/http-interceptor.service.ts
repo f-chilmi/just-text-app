@@ -11,6 +11,7 @@ import { RollbarService } from './rollbar.service';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { TokenStorageService } from './token-storage.service';
+import { Data } from '../_models/data';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
@@ -19,7 +20,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private tokenService: TokenStorageService
   ) { }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<Data>, next: HttpHandler): Observable<HttpEvent<Data>> {
     // const token: string = "invalid token";
     const token: string = this.tokenService.getToken();
     request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });

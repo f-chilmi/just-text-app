@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { HttpService } from './http.service';
+import { DataObj } from '../_models/dataObj';
+import { Data } from '../_models/data';
 
 const URL = `${environment.URL}auth/`
 
@@ -22,12 +24,12 @@ export class AuthService {
     private httpService: HttpService
   ) { }
 
-  login(phone: string, password: string): Observable<any> {
-    return this.httpService.post(`${URL}login`, { phone, password })
+  login(phone: string, password: string): Observable<DataObj> {
+    return this.httpService.postAuth(`${URL}login`, { phone, password })
   }
 
-  register(name: string, phone: string, password: string): Observable<any> {
-    return this.httpService.post(`${URL}register`, { name, phone, password })
+  register(name: string, phone: string, password: string): Observable<DataObj> {
+    return this.httpService.postAuth(`${URL}register`, { name, phone, password })
   }
 
 }
