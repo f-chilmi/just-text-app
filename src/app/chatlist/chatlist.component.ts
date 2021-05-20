@@ -20,7 +20,7 @@ const URL = `${environment.URL}`
 
 export class ChatlistComponent implements OnInit, OnDestroy {
   
-  userId: number = this.tokenStorage.getUser()._id;
+  userId: string = this.tokenStorage.getUser()._id;
   activeUser: string = '';
   activeId: string = '';
   activeContactId: string = '';

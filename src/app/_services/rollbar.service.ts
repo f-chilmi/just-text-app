@@ -11,7 +11,7 @@ const rollbarConfig = {
 export class RollbarErrorHandler implements ErrorHandler {
   constructor(@Inject(RollbarService) private rollbar: Rollbar) {}
 
-  handleError(err:any) : void {
+  handleError(err) : void {
     this.rollbar.error(err.originalError || err);
   }
 }

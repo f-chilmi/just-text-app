@@ -13,7 +13,7 @@ import { WebsocketService } from 'src/app/_services/websocket.service';
 export class NewChatComponent implements OnInit, DoCheck{
 
   closeResult: string;
-  form: any = {
+  form = {
     phone: null,
     message: null
   };
@@ -46,7 +46,7 @@ export class NewChatComponent implements OnInit, DoCheck{
     });
   }
   
-  private getDismissReason(reason: any): string {
+  private getDismissReason(reason): string {
     switch (reason) {
       case ModalDismissReasons.ESC: {
         return 'by pressing ESC';

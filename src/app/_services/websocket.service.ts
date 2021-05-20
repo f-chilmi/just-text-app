@@ -17,7 +17,7 @@ export class WebsocketService {
 
   websocket: WebSocket;
   chatMessages: ChatMessage[] = [];
-  firstChatId: any;
+  firstChatId: string;
   listMessage: ListMessage[] = [];
   userId: string = this.tokenStorage.getUser()._id;
 
@@ -93,7 +93,7 @@ export class WebsocketService {
     )
   }
 
-  public loadMore (idContact: number, idChat: number) {
+  public loadMore (idContact: number, idChat: string) {
     this.loadingLoadMore = true;
     const newMessage = this.chatMessages;
     this.httpService.get(`${URL}chat/${idContact}/${idChat}`).subscribe(

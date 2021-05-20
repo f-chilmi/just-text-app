@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
-  form: any = {
+  form = {
     name: null,
     phone: null,
     password: null
