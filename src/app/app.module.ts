@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpErrorInterceptor } from './_services/http-interceptor.service';
+import { RollbarService, rollbarFactory } from './_services/rollbar.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +20,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     NgbModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true  },
+    { provide: RollbarService, useFactory: rollbarFactory }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

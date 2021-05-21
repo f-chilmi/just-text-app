@@ -56,7 +56,16 @@
           </div>
         </div>
       </div>
-      <button type="submit" class="btn-auth-submit mb-2" >Submit</button>
+
+      <button type="submit" class="btn-auth-submit mb-2" >
+        <ng-container *ngIf="isLoading">
+          <div class="spinner-border text-light" size="sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </ng-container>
+        Submit
+      </button>
+
       <div>
         <span class="float-end auth-small-text">Not registered? <a class="text-decoration-none" href="/auth/register">Create an account</a> </span>
       </div>
@@ -70,9 +79,6 @@
         </div>
       </div>
     </form>
-    <div *ngIf="isLoading" style="text-align: center; width: '100%';">
-      <loading-component></loading-component>
-    </div>
     <div class="alert alert-success" *ngIf="isLoggedIn">
       Success log in!
     </div>

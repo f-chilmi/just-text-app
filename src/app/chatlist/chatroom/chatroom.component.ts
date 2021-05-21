@@ -13,7 +13,6 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
 
   message: string = '';
 
-  [x: string]: any;
   @Input() chatMessage;
   @Input() activeId;
   @Input() myId;
@@ -33,7 +32,7 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
     this.scrollToBottom();
   }
 
-  onKey(event: any) {
+  onKey(event) {
     
     if (event.keyCode === 13) {
       const sendData = {

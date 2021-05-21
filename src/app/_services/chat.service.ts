@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { TokenStorageService } from './token-storage.service';
+import { HttpService } from './http.service';
+import { Data } from '../_models/data';
 
 const URL = environment.URL
 
@@ -12,18 +13,11 @@ const URL = environment.URL
 export class ChatService {
 
   constructor(
-    private http: HttpClient,
+    private httpService: HttpService,
     private tokenStorage: TokenStorageService,
   ) { }
 
-  httpHeader = {
-    headers: new HttpHeaders({
-      'Authorization': `Bearer ${this.tokenStorage.getToken()}`,
-      'content-type': 'application/json'
-    })
-  }
-
-  getChat(id: number): Observable<any> {
-    return this.http.get<any>(URL + `chat/${id}/nil`, this.httpHeader)
+  getChat(id: number): Observable<Data> {
+    return this.httpService.get(`${URL}chat/${id}/nil`)
   }
 }
