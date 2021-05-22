@@ -1,13 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
-import { UserService } from '../_services/user.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { ChatService } from '../_services/chat.service';
 import { WebsocketService } from '../_services/websocket.service';
-import { ChatMessage } from '../_models/chatMessage24';
-import { ListMessage } from '../_models/listMessage24';
 
 const URL = `${environment.URL}`
 

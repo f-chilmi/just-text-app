@@ -1,7 +1,5 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { ChatService } from 'src/app/_services/chat.service';
 import { Output, EventEmitter } from "@angular/core";
 import { WebsocketService } from 'src/app/_services/websocket.service';
 
@@ -19,7 +17,6 @@ export class NewChatComponent implements OnInit, DoCheck{
   };
   isSuccessful = false;
   errorMessage: string;
-
   modalReference = null;
 
   @Output() refresh = new EventEmitter<{}>();
@@ -34,7 +31,7 @@ export class NewChatComponent implements OnInit, DoCheck{
 
   ngDoCheck(): void {
     if (this.websocketService.successSend) {
-      this.modalReference.close();
+      this.modalService.dismissAll();
     }
   }
 

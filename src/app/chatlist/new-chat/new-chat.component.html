@@ -3,8 +3,9 @@
   <button class="btn w-100 btn-outline-primary btn-sm my-2" (click)="open(mymodal)">Send new message</button>
 </div>
    
-<ng-template #mymodal let-modal class="fit-content" >
-  <div class="modal-body fit-content">
+<ng-template #mymodal let-modal >
+  
+  <div class="modal-body fit-content" >
     
     <form
       *ngIf="!isSuccessful"
