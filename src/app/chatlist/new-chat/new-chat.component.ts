@@ -61,7 +61,7 @@ export class NewChatComponent implements OnInit, DoCheck{
 
   onSubmit(): void {
     const { phone, message } = this.form;
-    this.websocketService.sendNewChat(phone, message)    
+    this.websocketService.sendNewChat(phone, message)
   }
 
 }

@@ -125,6 +125,9 @@ export class WebsocketService {
         this.refresh();
         this.loadingSendNewMsg = false;
         this.successSend = true;
+        setTimeout(() => {
+          this.successSend = false
+        }, 500);
       },
       err => {
         this.loadingSendNewMsg = false;
