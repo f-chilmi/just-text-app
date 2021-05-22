@@ -19,13 +19,19 @@
           required
           #phone="ngModel" 
           placeholder="Phone"
+          minlength="8"
+          maxlength="15"
         >
         <div
-          class="alert alert-danger"
+          class="alert-danger"
           role="alert"
           *ngIf="phone.errors && f.submitted"
         >
-          Phone is required!
+          <div *ngIf="phone.errors.required">Phone is required</div>
+          <div *ngIf="phone.errors.minlength">Minimum length of number is 8</div>
+          <div *ngIf="phone.errors.pattern">
+            Phone must be a valid number
+          </div>
         </div>
       </div>
       <div class="mb-4 auth-input form-group">
@@ -40,7 +46,7 @@
           #password="ngModel"
         >
         <div
-          class="alert alert-danger"
+          class="alert-danger"
           role="alert"
           *ngIf="password.errors && f.submitted"
         >
@@ -53,7 +59,7 @@
 
       <button type="submit" class="btn-auth-submit mb-2" >
         <ng-container *ngIf="isLoading">
-          <div class="spinner-border text-light" size="sm" role="status">
+          <div class="spinner-border spinner-border-sm text-light" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
         </ng-container>
