@@ -15,6 +15,10 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   isLoading = false;
+  form = {
+    phone: null,
+    password: null
+  };
 
   constructor(
     private authService: AuthService,
@@ -30,6 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    const { phone, password } = this.form;
     this.isLoading = true;
     this.isLoginFailed = false
     this.authService.login(form.value.phone, form.value.password).subscribe(

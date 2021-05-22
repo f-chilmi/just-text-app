@@ -29,14 +29,14 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         retry(1),
         catchError((error: HttpErrorResponse) => {
           const rollbar = this.injector.get(RollbarService);
-          let errorMessage = '';
-          if (error.error instanceof ErrorEvent) {
-            // client-side error
-            errorMessage = `Error: ${error.error.message}`;
-          } else {
-            // server-side error
-            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-          }
+          const errorMessage = `Error: ${error.error.message}`;
+          // if (error.error instanceof ErrorEvent) {
+          //   // client-side error
+          //   errorMessage = `Error: ${error.error.message}`;
+          // } else {
+          //   // server-side error
+          //   errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+          // }
           window.alert(errorMessage);
           rollbar.error(error)
           return throwError(errorMessage);

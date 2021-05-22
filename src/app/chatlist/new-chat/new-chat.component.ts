@@ -17,6 +17,7 @@ export class NewChatComponent implements OnInit, DoCheck{
     phone: null,
     message: null
   };
+  isSuccessful = false;
   errorMessage: string;
 
   modalReference = null;
@@ -39,6 +40,7 @@ export class NewChatComponent implements OnInit, DoCheck{
 
   open(content) {
     this.modalReference = this.modalService.open(content);
+
     this.modalReference.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -60,12 +62,9 @@ export class NewChatComponent implements OnInit, DoCheck{
     }
   }
 
-  submit () {
+  onSubmit(): void {
     const { phone, message } = this.form;
-    this.websocketService.sendNewChat(phone, message)
-    // this.modalReference.close();
-    // console.log(this.websocketService.successSend)
-    
+    this.websocketService.sendNewChat(phone, message)    
   }
 
 }

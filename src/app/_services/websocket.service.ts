@@ -140,7 +140,7 @@ export class WebsocketService {
     this.user.getListMessage().subscribe(
       val => {
         const data = val['data']
-        data.forEach(element => {
+        data !== null && data.forEach(element => {
           newList.push(element);
         });
         this.listMessage = orderBy(newList, ['created_at'], ['desc']);
