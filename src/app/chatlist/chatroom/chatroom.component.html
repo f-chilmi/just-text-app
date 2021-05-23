@@ -10,7 +10,7 @@
     <ng-container *ngIf="chat.sender_id === myId; else imNotSender">
       <div class="d-block">
         <div class="balloon-right">
-          <p class="right-chat mb-0"> {{chat.message}} </p>
+          <p class="right-chat mb-0" style="white-space: 'pre-wrap';"> {{chat.message}} </p>
           <div class="time-chatRoom">{{time(chat.created_at)}}</div>
         </div>
       </div>
@@ -18,7 +18,7 @@
     <ng-template #imNotSender>
       <div class="d-block">
         <div class="balloon-left">
-          <p class="left-chat"> {{chat.message}} </p>
+          <p class="left-chat" style="white-space: 'pre-wrap';"> {{chat.message}} </p>
           <div class="time-chatRoom">{{time(chat.created_at)}}</div>
         </div>
       </div>
@@ -27,7 +27,7 @@
   </div>
   <div #scrollBottom></div>
 
-  <form class="input-chat d-flex shadow-sm" (keydown)="onKey($event)">
+  <form class="input-chat d-flex shadow-sm" (keydown)="onKey($event)" #myForm="ngForm">
     <textarea [(ngModel)]="message" name="message" (change)="onKey($event)" class="form-control textarea" rows="1" placeholder="Type here"></textarea>
     <div (click)="send()" class="send d-flex justify-content-end align-items-center pointer"> 
       <i class="material-icons">send</i> 

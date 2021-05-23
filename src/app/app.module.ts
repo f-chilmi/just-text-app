@@ -11,7 +11,9 @@ import { HttpErrorInterceptor } from './_services/http-interceptor.service';
 import { RollbarService, rollbarFactory } from './_services/rollbar.service';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,

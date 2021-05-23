@@ -12,18 +12,11 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   isLoggedIn = false;
-  isLoginFailed = false;
-  errorMessage = '';
-  isLoading = false;
-  form = {
-    phone: null,
-    password: null
-  };
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private tokenStorage: TokenStorageService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -34,23 +27,15 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    const { phone, password } = this.form;
-    this.isLoading = true;
-    this.isLoginFailed = false
+    this.authService.authLoading = true;
     this.authService.login(form.value.phone, form.value.password).subscribe(
       data => {
         this.tokenStorage.saveToken(data.data.token);
         this.tokenStorage.saveUser(data.data);
 
-        this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.router.navigate(['chat']);
-        this.isLoading = false;
-      },
-      err => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
-        this.isLoading = false;
+        this.authService.authLoading = false;
       }
     );
   }

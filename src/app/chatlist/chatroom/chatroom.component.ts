@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked } from '@ang
 import { Input, Output, EventEmitter } from "@angular/core";
 import { WebsocketService } from 'src/app/_services/websocket.service';
 import { ComplexTime } from 'src/app/_helpers/time';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-chatroom',
@@ -10,6 +11,7 @@ import { ComplexTime } from 'src/app/_helpers/time';
 })
 export class ChatroomComponent implements OnInit, AfterViewChecked {
   @ViewChild('scrollBottom') scrollBottom: ElementRef;
+  @ViewChild('myForm', {static: false}) myForm: NgForm;
 
   message: string = '';
 
@@ -33,17 +35,19 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   }
 
   onKey(event) {
-    
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && !event.shiftKey) {
+      event.preventDefault();
       const sendData = {
         "data": this.message,
         "from_user_id" : this.myId,
         "to_user_id": this.activeContactId,
         "contact_id" : this.activeId
       };
-      this.message = ''
-      this.sendChat.emit(sendData)
-    } 
+      if (this.message !== '' && this.message.length > 0) {
+        this.myForm.reset()
+        this.sendChat.emit(sendData)
+      }
+    }
   }
 
   send() {
@@ -53,8 +57,10 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
       "to_user_id": this.activeContactId,
       "contact_id" : this.activeId
     };
-    this.message = ''
-    this.sendChat.emit(sendData)
+    if (this.message !== '') {
+      this.myForm.reset()
+      this.sendChat.emit(sendData)
+    }
   }
 
   loadMore() {

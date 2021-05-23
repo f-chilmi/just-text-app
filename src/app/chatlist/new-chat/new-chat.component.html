@@ -1,11 +1,13 @@
 
 <div>
-  <button class="btn w-100 btn-outline-primary btn-sm my-2" (click)="open(mymodal)">Send new message</button>
+  <button class="btn w-100 btn-outline-primary btn-sm my-2" (click)="open(mymodal)">Start new message</button>
 </div>
    
 <ng-template #mymodal let-modal >
   
-  <div class="modal-body fit-content" >
+  <div class="modal-body" >
+
+    <h3 class="text-center">New Message</h3>
     
     <form
       *ngIf="!isSuccessful"
@@ -15,7 +17,7 @@
       #f="ngForm"
       novalidate
     > 
-      <div class="mb-4 auth-input form-group">
+      <div class="mb-4 auth-input form-group w-100">
         <input
           #phone="ngModel"
           type="text" 
@@ -25,9 +27,10 @@
           name="phone"
           [(ngModel)]="form.phone"
           required
-          placeholder="Phone"
+          placeholder="Input phone number here.."
           minlength="8"
           maxlength="15"
+          myPhoneEqual=myPhone
         >
         <div class="alert-danger" *ngIf="phone.errors && f.submitted">
           <div *ngIf="phone.errors.required">Phone is required</div>
@@ -36,13 +39,14 @@
             Phone must be a valid number
           </div>
         </div>
+        <div class="alert-danger" *ngIf="form.phone === myPhone">Can not send to your own number</div>
       </div>
-      <div class="mb-4 auth-input form-group">
+      <div class="mb-4 auth-input form-group w-100">
         <textarea
           type="text"
           #message="ngModel"
           class="form-control w-100"
-          placeholder="Type message here"
+          placeholder="Type message here.."
           name="message"
           [(ngModel)]="form.message"
           required
@@ -52,7 +56,7 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-outline-dark">
+      <button type="submit" class="btn btn-outline-dark ml-auto">
         <ng-container *ngIf="websocketService.loadingSendNewMsg">
           <div class="spinner-border text-secondary" size="sm" role="status">
             <span class="visually-hidden">Loading...</span>

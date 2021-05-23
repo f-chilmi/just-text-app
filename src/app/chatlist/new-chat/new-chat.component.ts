@@ -1,7 +1,8 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, TemplateRef } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Output, EventEmitter } from "@angular/core";
 import { WebsocketService } from 'src/app/_services/websocket.service';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-new-chat',
@@ -18,12 +19,14 @@ export class NewChatComponent implements OnInit, DoCheck{
   isSuccessful = false;
   errorMessage: string;
   modalReference = null;
+  myPhone: string = this.tokenStorage.getUser().phone;
 
   @Output() refresh = new EventEmitter<{}>();
   
   constructor(
     private modalService: NgbModal,
-    public websocketService: WebsocketService
+    public websocketService: WebsocketService,
+    private tokenStorage: TokenStorageService
     ) {}
 
   ngOnInit(): void {
@@ -61,7 +64,15 @@ export class NewChatComponent implements OnInit, DoCheck{
 
   onSubmit(): void {
     const { phone, message } = this.form;
-    this.websocketService.sendNewChat(phone, message)
+    if (this.myPhone !== phone) {
+      this.websocketService.sendNewChat(phone, message)
+      setTimeout(() => {
+        this.form = {
+          phone: null,
+          message: null
+        };
+      }, 3000);
+    }    
   }
 
 }

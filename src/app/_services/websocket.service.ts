@@ -69,6 +69,7 @@ export class WebsocketService {
 
     this.websocket.onclose = (event) => {
       console.log('close: ', event);
+      this.httpService.errorMsg = "Something unexpectedly went wrong!"
     }
   }
 
@@ -131,7 +132,8 @@ export class WebsocketService {
       },
       err => {
         this.loadingSendNewMsg = false;
-        this.errorSendNewMsg = err.error.error
+        this.errorSendNewMsg = err.error.message;
+        console.log(this.errorSendNewMsg)
       }
     )
   }

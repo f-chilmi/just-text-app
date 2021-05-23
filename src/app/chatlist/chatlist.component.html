@@ -12,7 +12,7 @@
           
         </div>
         <div style="text-align: end; margin-left: auto;" >
-          <button class="button-logout" (click)="logout()" >
+          <button class="button-logout" (click)="openModalLogout(logoutConfirmation)" ngbTooltip="Logout" >
             <i class="material-icons">power_settings_new</i>
           </button>
         </div>
@@ -33,6 +33,24 @@
         </ng-template>        
       </ng-template>
       
+
+      <!-- modal logout confirmation  -->
+      <ng-template #logoutConfirmation let-modal>
+        <div class="modal-body">
+          <div class="d-flex flex-column align-items-center p-4">
+            <i class="material-icons mb-2" style="font-size: '80px';">check_circle_outline</i>
+            <Modal.Body class="modal-body p-2" style="font-size: '19px';">Are you sure want to logout?</Modal.Body>
+            <div class="d-flex mt-3">
+              <Button class="m-2 btn-success py-2 px-3" style="border-radius: '10px';" (click)="logout()" >
+                Yes
+              </Button>
+              <Button class="m-2 btn-light py-2 px-3" style="border-radius: '10px';" (click)="modal.dismiss()" >
+                No
+              </Button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
       
     </div>
 
