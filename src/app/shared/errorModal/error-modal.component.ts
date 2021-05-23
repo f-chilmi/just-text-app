@@ -22,6 +22,7 @@ export class ErrorModal implements OnInit, DoCheck {
     private router: Router,
     public httpErrorInterceptor: HttpErrorInterceptor,
     public httpService: HttpService,
+    
   ) { }
 
   ngOnInit(): void {
@@ -36,13 +37,6 @@ export class ErrorModal implements OnInit, DoCheck {
       }, 2000);
       this.openModal();
     }
-    if (this.httpService.errorMsg !== '' && !this.modalOpen) {
-      setTimeout(() => {
-        this.closeModal();
-        this.httpService.errorMsg = '';
-      }, 3000);
-      this.openModal()
-    }
     if (this.httpService.errorMsg.includes('token') && !this.modalOpen) {
       setTimeout(() => {
         this.tokenStorage.saveToken('');
@@ -53,6 +47,13 @@ export class ErrorModal implements OnInit, DoCheck {
         }
       }, 2000);
       this.openModal();
+    }
+    if (this.httpService.errorMsg !== '' && !this.modalOpen) {
+      setTimeout(() => {
+        this.closeModal();
+        this.httpService.errorMsg = '';
+      }, 3000);
+      this.openModal()
     }
   }
 

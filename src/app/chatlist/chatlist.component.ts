@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
@@ -13,7 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   providers: [WebsocketService, ChatService]
 })
 
-export class ChatlistComponent implements OnInit, OnDestroy {
+export class ChatlistComponent implements OnInit {
   
   userId: string = this.tokenStorage.getUser()._id;
   activeUser: string = '';
@@ -41,12 +41,7 @@ export class ChatlistComponent implements OnInit, OnDestroy {
     }
 
     this.websocketService.openWebSocket();
-  } 
-
-  ngOnDestroy(): void {
-    this.websocketService.closeWebSocket();
   }
-
 
   selectList($event) {
     this.activeUser = $event.name

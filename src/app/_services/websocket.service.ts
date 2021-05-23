@@ -120,6 +120,7 @@ export class WebsocketService {
   public sendNewChat (phone: string, message: string) {
     this.loadingSendNewMsg = true;
     this.chatMessages = [];
+    this.activeId = '';
     this.successSend = false;
     this.httpService.post(`${URL}new-chat`, { phone, message }).subscribe(
       val => {
