@@ -38,12 +38,12 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
     if (event.keyCode === 13 && !event.shiftKey) {
       event.preventDefault();
       const sendData = {
-        "data": this.message,
+        "data": this.message.trim(),
         "from_user_id" : this.myId,
         "to_user_id": this.activeContactId,
         "contact_id" : this.activeId
       };
-      if (this.message !== '' && this.message.length > 0) {
+      if (this.message && this.message.trim() !== '') {
         this.myForm.reset()
         this.sendChat.emit(sendData)
       }
@@ -52,12 +52,12 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
 
   send() {
     const sendData = {
-      "data": this.message,
+      "data": this.message.trim(),
       "from_user_id" : this.myId,
       "to_user_id": this.activeContactId,
       "contact_id" : this.activeId
     };
-    if (this.message !== '') {
+    if (this.message && this.message.trim() !== '') {
       this.myForm.reset()
       this.sendChat.emit(sendData)
     }
