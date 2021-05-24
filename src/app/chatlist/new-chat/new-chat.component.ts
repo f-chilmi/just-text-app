@@ -35,6 +35,12 @@ export class NewChatComponent implements OnInit, DoCheck{
   ngDoCheck(): void {
     if (this.websocketService.successSend) {
       this.modalService.dismissAll();
+      setTimeout(() => {
+        this.form = {
+          phone: null,
+          message: null
+        };
+      }, 200);
     }
   }
 
@@ -66,12 +72,6 @@ export class NewChatComponent implements OnInit, DoCheck{
     const { phone, message } = this.form;
     if (this.myPhone !== phone) {
       this.websocketService.sendNewChat(phone, message)
-      setTimeout(() => {
-        this.form = {
-          phone: null,
-          message: null
-        };
-      }, 3000);
     }    
   }
 

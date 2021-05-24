@@ -25,14 +25,33 @@
     </ng-template>
     
   </div>
-  <div #scrollBottom></div>
+  <div #scrollBottom style="height: '40px';"></div>
 
-  <form class="input-chat d-flex shadow-sm" (keydown)="onKey($event)" #myForm="ngForm">
-    <textarea [(ngModel)]="message" name="message" (change)="onKey($event)" class="form-control textarea" rows="1" placeholder="Type here"></textarea>
-    <div (click)="send()" class="send d-flex justify-content-end align-items-center pointer"> 
-      <i class="material-icons">send</i> 
+  <div class="position-absolute w-100" style="bottom: 0;">
+    <div class="position-relative">
+      <form 
+        class="input-chat d-flex shadow-sm position-absolute" 
+        style="bottom: '10px'; flex: 1 1;"
+        (keydown)="onKey($event)" 
+        #myForm="ngForm"
+      >
+        <textarea 
+          id="textarea"
+          (keyup)="autogrow()"
+          [(ngModel)]="message" 
+          name="message" 
+          (change)="onKey($event)" 
+          class="form-control textarea " 
+          rows="1" 
+          placeholder="Type here"
+        >
+        </textarea>
+        <div (click)="send()" class="send d-flex justify-content-end align-items-center pointer" style="margin-left: auto;"> 
+          <i class="material-icons">send</i> 
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 
   </div>
 

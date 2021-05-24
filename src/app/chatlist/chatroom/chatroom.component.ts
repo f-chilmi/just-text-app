@@ -27,7 +27,6 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-    // this.scrollToBottom();
   }
 
   ngAfterViewChecked() {
@@ -43,6 +42,8 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
         "to_user_id": this.activeContactId,
         "contact_id" : this.activeId
       };
+      let  textArea = document.getElementById("textarea") 
+      textArea.style.height = '0px';
       if (this.message && this.message.trim() !== '') {
         this.myForm.reset()
         this.sendChat.emit(sendData)
@@ -51,6 +52,8 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   }
 
   send() {
+    let  textArea = document.getElementById("textarea") 
+    textArea.style.height = '0px';
     const sendData = {
       "data": this.message.trim(),
       "from_user_id" : this.myId,
@@ -72,12 +75,19 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
       this.scrollBottom.nativeElement.scrollIntoView({ behavior: 'smooth', block: "start" })
 
     } catch(err) {
-      console.log('error scroll to bottom:', err)
+      console.log('error scroll to bottom: ', err)
     }
   };
 
   time(time) {
     return ComplexTime(time)
+  }
+
+  autogrow(){
+    let  textArea = document.getElementById("textarea")
+    let height = textArea.scrollHeight < 50 ? textArea.scrollHeight : 50
+    textArea.style.height = '0px';
+    textArea.style.height = height + 'px';
   }
 
 }
