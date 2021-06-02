@@ -16,9 +16,6 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   message: string = '';
 
   @Input() chatMessage;
-  // @Input() activeId;
-  // @Input() myId;
-  // @Input() activeContactId;
 
   @Output() sendChat = new EventEmitter<{data: string, from_user_id: string, to_user_id: string, contact_id: string}>();
 

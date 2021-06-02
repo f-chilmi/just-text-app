@@ -10,8 +10,6 @@ import { ComplexTime } from 'src/app/_helpers/time';
 })
 export class ListChatComponent implements OnInit {
 
-  @Input() myId;
-
   @Output() selectList = new EventEmitter<{id: string, name: string}>();
   
   constructor(

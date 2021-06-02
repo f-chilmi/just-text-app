@@ -38,7 +38,7 @@
             Phone must be a valid number
           </div>
         </div>
-        <div class="alert-danger" *ngIf="form.phone === myPhone">Can not send to your own number</div>
+        <div class="alert-danger" *ngIf="form.phone === websocketService.myPhone">Can not send to your own number</div>
       </div>
       <div class="mb-4 auth-input form-group w-100">
         <textarea

@@ -19,7 +19,6 @@ export class NewChatComponent implements OnInit, DoCheck{
   isSuccessful = false;
   errorMessage: string;
   modalReference = null;
-  myPhone: string = this.tokenStorage.getUser().phone;
 
   @Output() refresh = new EventEmitter<{}>();
   
@@ -70,7 +69,7 @@ export class NewChatComponent implements OnInit, DoCheck{
 
   onSubmit(): void {
     const { phone, message } = this.form;
-    if (this.myPhone !== phone) {
+    if (this.websocketService.myPhone !== phone) {
       this.websocketService.sendNewChat(phone, message)
     }    
   }
