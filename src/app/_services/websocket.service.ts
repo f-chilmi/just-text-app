@@ -127,15 +127,31 @@ export class WebsocketService {
     this.successSend = false;
     this.httpService.post(`${URL}new-chat`, { phone, message }).subscribe(
       val => {
+
+        // get active list room
+        const newList = []
+        this.user.getListMessage().subscribe(
+          val => {
+            const data = val['data']
+            data !== null && data.forEach(element => {
+              newList.push(element);
+            });
+            this.listMessage = orderBy(newList, ['created_at'], ['desc']);
+          }
+        )
+
+        // open chat room after sending new message ONLY WHEN it has room chat before
         let friend
         this.listMessage.forEach(el => {
           if (el._id === val.data['contact_id']) {
             friend = el.users_info.filter(i => i['name'] !== this.myName)[0]['name']
           }
         })
-        this.activeUser = friend
-        this.subscribeChat(val.data['contact_id'])
-        this.refresh();
+        if (friend !== undefined) {
+          this.activeUser = friend
+          this.subscribeChat(val.data['contact_id'])
+        }
+        
         this.loadingSendNewMsg = false;
         this.successSend = true;
         setTimeout(() => {
