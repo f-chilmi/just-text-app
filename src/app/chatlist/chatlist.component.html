@@ -7,8 +7,8 @@
     <!-- left side of chat view (chatlist) -->
     <div class="left">
       <div class="d-flex">
-        <div class="auth-title mb-2">{{ myName }} 
-          <span style="font-size: small; font-weight: 300;" >( {{ myPhone }} )</span>
+        <div class="auth-title mb-2">{{ websocketService.myName }} 
+          <span style="font-size: small; font-weight: 300;" >( {{ websocketService.myPhone }} )</span>
           
         </div>
         <div style="text-align: end; margin-left: auto;" >
@@ -71,7 +71,7 @@
       </ng-container>
 
       <ng-template #roomIsActive>
-        <app-contact-name [activeUser]="activeUser" ></app-contact-name>
+        <app-contact-name ></app-contact-name>
         <app-chatroom 
           [chatMessage]="chatMessage" 
           [activeId]="activeId" 

@@ -1,5 +1,5 @@
 import { Component, OnInit, DoCheck, TemplateRef } from '@angular/core';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Output, EventEmitter } from "@angular/core";
 import { WebsocketService } from 'src/app/_services/websocket.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ChatMessage } from '../_models/chatMessage24';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from '../../environments/environment';
@@ -34,6 +34,10 @@ export class WebsocketService {
   loadingLoadMore: boolean = false;
 
   activeId: string;
+  activeUser: string;
+  activeContactId: string;
+  myName: string;
+  myPhone: string;
 
   constructor(
     private httpService: HttpService,
@@ -123,6 +127,14 @@ export class WebsocketService {
     this.successSend = false;
     this.httpService.post(`${URL}new-chat`, { phone, message }).subscribe(
       val => {
+        let friend
+        this.listMessage.forEach(el => {
+          if (el._id === val.data['contact_id']) {
+            friend = el.users_info.filter(i => i['name'] !== this.myName)[0]['name']
+          }
+        })
+        this.activeUser = friend
+        this.subscribeChat(val.data['contact_id'])
         this.refresh();
         this.loadingSendNewMsg = false;
         this.successSend = true;

@@ -7,7 +7,7 @@
   </div>
   
   <div *ngFor="let chat of websocketService.chatMessages" #scrollMe >
-    <ng-container *ngIf="chat.sender_id === myId; else imNotSender">
+    <ng-container *ngIf="chat.sender_id === websocketService.userId; else imNotSender">
       <div class="d-block">
         <div class="balloon-right">
           <p class="right-chat mb-0" style="white-space: 'pre-wrap';"> {{chat.message}} </p>

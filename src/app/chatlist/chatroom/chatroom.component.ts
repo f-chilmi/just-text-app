@@ -16,9 +16,9 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   message: string = '';
 
   @Input() chatMessage;
-  @Input() activeId;
-  @Input() myId;
-  @Input() activeContactId;
+  // @Input() activeId;
+  // @Input() myId;
+  // @Input() activeContactId;
 
   @Output() sendChat = new EventEmitter<{data: string, from_user_id: string, to_user_id: string, contact_id: string}>();
 
@@ -38,9 +38,9 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
       event.preventDefault();
       const sendData = {
         "data": this.message.trim(),
-        "from_user_id" : this.myId,
-        "to_user_id": this.activeContactId,
-        "contact_id" : this.activeId
+        "from_user_id" : this.websocketService.userId,
+        "to_user_id": this.websocketService.activeContactId,
+        "contact_id" : this.websocketService.activeId
       };
       let  textArea = document.getElementById("textarea") 
       textArea.style.height = '0px';
@@ -56,9 +56,9 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
     textArea.style.height = '0px';
     const sendData = {
       "data": this.message.trim(),
-      "from_user_id" : this.myId,
-      "to_user_id": this.activeContactId,
-      "contact_id" : this.activeId
+      "from_user_id" : this.websocketService.userId,
+      "to_user_id": this.websocketService.activeContactId,
+      "contact_id" : this.websocketService.activeId
     };
     if (this.message && this.message.trim() !== '') {
       this.myForm.reset()
@@ -67,7 +67,7 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   }
 
   loadMore() {
-    this.websocketService.loadMore(this.activeId, this.websocketService.firstChatId)
+    this.websocketService.loadMore(parseInt(this.websocketService.activeId), this.websocketService.firstChatId)
   }
 
   scrollToBottom(): void {

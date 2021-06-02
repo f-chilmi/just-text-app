@@ -16,7 +16,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     let message;
     let stackTrace;
-    console.log(error)
+
     if (error instanceof HttpErrorResponse) {
       // Server error
       message = errorService.getServerErrorMessage(error);
@@ -35,7 +35,7 @@ export class GlobalErrorHandler implements ErrorHandler {
       setTimeout(() => {
         notifier.dismissError();
         message = '';
-      }, 3000);
+      }, 5000);
     }
   }
 }

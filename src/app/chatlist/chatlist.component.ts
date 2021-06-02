@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
 import { ChatService } from '../_services/chat.service';
 import { WebsocketService } from '../_services/websocket.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,15 +13,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class ChatlistComponent implements OnInit {
-  
-  userId: string = this.tokenStorage.getUser()._id;
-  activeUser: string = '';
-  activeId: string = '';
-  activeContactId: string = '';
-  myName: string = '';
-  myPhone: string = '';
-
-  listMessage = this.websocketService.listMessage;
 
   constructor(
     private tokenStorage: TokenStorageService,
@@ -34,8 +24,8 @@ export class ChatlistComponent implements OnInit {
   ngOnInit(): void {
     this.websocketService.refresh();
 
-    this.myName = this.tokenStorage.getUser().name
-    this.myPhone = this.tokenStorage.getUser().phone
+    this.websocketService.myName = this.tokenStorage.getUser().name
+    this.websocketService.myPhone = this.tokenStorage.getUser().phone
     if (!this.tokenStorage.getToken()) {
       this.router.navigate(['/'])
     }
@@ -44,9 +34,9 @@ export class ChatlistComponent implements OnInit {
   }
 
   selectList($event) {
-    this.activeUser = $event.name
-    this.activeId = $event.id
-    this.activeContactId = $event.contactId
+    this.websocketService.activeUser = $event.name
+    this.websocketService.activeId = $event.id
+    this.websocketService.activeContactId = $event.contactId
     this.websocketService.subscribeChat($event.id);
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Input, Output, EventEmitter } from "@angular/core";
+import { WebsocketService } from 'src/app/_services/websocket.service';
 
 @Component({
   selector: 'app-contact-name',
@@ -10,7 +11,9 @@ export class ContactNameComponent implements OnInit {
 
   @Input() activeUser;
 
-  constructor() { }
+  constructor(
+    public websocketService: WebsocketService
+  ) { }
 
   ngOnInit(): void {
   }
