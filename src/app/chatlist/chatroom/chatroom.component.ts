@@ -64,7 +64,7 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   }
 
   loadMore() {
-    this.websocketService.loadMore(parseInt(this.websocketService.activeId), this.websocketService.firstChatId)
+    this.websocketService.loadMore(this.websocketService.activeId, this.websocketService.firstChatId)
   }
 
   scrollToBottom(): void {

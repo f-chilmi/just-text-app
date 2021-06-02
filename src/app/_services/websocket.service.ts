@@ -98,7 +98,7 @@ export class WebsocketService {
     )
   }
 
-  public loadMore (idContact: number, idChat: string) {
+  public loadMore (idContact: string, idChat: string) {
     this.loadingLoadMore = true;
     const newMessage = this.chatMessages;
     this.httpService.get(`${URL}chat/${idContact}/${idChat}`).subscribe(
