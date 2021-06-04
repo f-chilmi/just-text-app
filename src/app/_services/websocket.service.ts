@@ -68,6 +68,7 @@ export class WebsocketService {
         }
         this.chatMessages.push(incomingChat);
       }
+      this.refreshWithoutLoading();
       
     }
 
@@ -129,16 +130,7 @@ export class WebsocketService {
       val => {
 
         // get active list room
-        const newList = []
-        this.user.getListMessage().subscribe(
-          val => {
-            const data = val['data']
-            data !== null && data.forEach(element => {
-              newList.push(element);
-            });
-            this.listMessage = orderBy(newList, ['created_at'], ['desc']);
-          }
-        )
+        this.refreshWithoutLoading();
 
         // open chat room after sending new message ONLY WHEN it has room chat before
         let friend
@@ -162,6 +154,19 @@ export class WebsocketService {
         this.loadingSendNewMsg = false;
         throw new Error(err);
         
+      }
+    )
+  }
+
+  public refreshWithoutLoading() {
+    const newList = []
+    this.user.getListMessage().subscribe(
+      val => {
+        const data = val['data']
+        data !== null && data.forEach(element => {
+          newList.push(element);
+        });
+        this.listMessage = orderBy(newList, ['created_at'], ['desc']);
       }
     )
   }

@@ -33,15 +33,16 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   onKey(event) {
     if (event.keyCode === 13 && !event.shiftKey) {
       event.preventDefault();
-      const sendData = {
-        "data": this.message.trim(),
-        "from_user_id" : this.websocketService.userId,
-        "to_user_id": this.websocketService.activeContactId,
-        "contact_id" : this.websocketService.activeId
-      };
       let  textArea = document.getElementById("textarea") 
       textArea.style.height = '0px';
       if (this.message && this.message.trim() !== '') {
+        const sendData = {
+          "data": this.message.trim(),
+          "from_user_id" : this.websocketService.userId,
+          "to_user_id": this.websocketService.activeContactId,
+          "contact_id" : this.websocketService.activeId
+        };
+
         this.myForm.reset()
         this.sendChat.emit(sendData)
       }
@@ -51,13 +52,15 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   send() {
     let  textArea = document.getElementById("textarea") 
     textArea.style.height = '0px';
-    const sendData = {
-      "data": this.message.trim(),
-      "from_user_id" : this.websocketService.userId,
-      "to_user_id": this.websocketService.activeContactId,
-      "contact_id" : this.websocketService.activeId
-    };
+    
     if (this.message && this.message.trim() !== '') {
+      const sendData = {
+        "data": this.message.trim(),
+        "from_user_id" : this.websocketService.userId,
+        "to_user_id": this.websocketService.activeContactId,
+        "contact_id" : this.websocketService.activeId
+      };
+
       this.myForm.reset()
       this.sendChat.emit(sendData)
     }
