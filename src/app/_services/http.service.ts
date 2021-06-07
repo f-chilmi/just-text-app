@@ -9,6 +9,9 @@ import { TokenStorageService } from './token-storage.service';
 })
 export class HttpService {
 
+  token = this.tokenStorage.getToken()
+  errorMsg: string = ''
+
   constructor(
     private http: HttpClient,
     private tokenStorage: TokenStorageService
@@ -16,7 +19,7 @@ export class HttpService {
 
   httpHeader = {
     headers: new HttpHeaders({
-      'Authorization': `Bearer ${this.tokenStorage.getToken()}`,
+      'Authorization': `Bearer ${this.token}`,
       'content-type': 'application/json'
     })
   }

@@ -1,15 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../_services/token-storage.service';
-import { UserService } from '../_services/user.service';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
 import { ChatService } from '../_services/chat.service';
 import { WebsocketService } from '../_services/websocket.service';
-import { ChatMessage } from '../_models/chatMessage24';
-import { ListMessage } from '../_models/listMessage24';
-
-const URL = `${environment.URL}`
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-chatlist',
@@ -18,29 +12,20 @@ const URL = `${environment.URL}`
   providers: [WebsocketService, ChatService]
 })
 
-export class ChatlistComponent implements OnInit, OnDestroy {
-  
-  userId: string = this.tokenStorage.getUser()._id;
-  activeUser: string = '';
-  activeId: string = '';
-  activeContactId: string = '';
-  myName: string = '';
-  myPhone: string = '';
-
-  listMessage = this.websocketService.listMessage;
+export class ChatlistComponent implements OnInit {
 
   constructor(
     private tokenStorage: TokenStorageService,
     private router: Router,
-    public websocketService: WebsocketService
+    public websocketService: WebsocketService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
     this.websocketService.refresh();
 
-    this.myName = this.tokenStorage.getUser().name
-    this.myPhone = this.tokenStorage.getUser().phone
-
+    this.websocketService.myName = this.tokenStorage.getUser().name
+    this.websocketService.myPhone = this.tokenStorage.getUser().phone
     if (!this.tokenStorage.getToken()) {
       this.router.navigate(['/'])
     }
@@ -48,15 +33,10 @@ export class ChatlistComponent implements OnInit, OnDestroy {
     this.websocketService.openWebSocket();
   }
 
-  ngOnDestroy(): void {
-    this.websocketService.closeWebSocket();
-  }
-
-
   selectList($event) {
-    this.activeUser = $event.name
-    this.activeId = $event.id
-    this.activeContactId = $event.contactId
+    this.websocketService.activeUser = $event.name
+    this.websocketService.activeId = $event.id
+    this.websocketService.activeContactId = $event.contactId
     this.websocketService.subscribeChat($event.id);
   }
 
@@ -64,8 +44,13 @@ export class ChatlistComponent implements OnInit, OnDestroy {
     this.websocketService.sendMessage($event)
   }
 
+  openModalLogout(content) {
+    this.modalService.open(content)
+  }
+
   logout() {
     this.tokenStorage.saveToken('');
+    this.modalService.dismissAll();
     if (!this.tokenStorage.getToken()) {
       this.router.navigate(['/'])
     }

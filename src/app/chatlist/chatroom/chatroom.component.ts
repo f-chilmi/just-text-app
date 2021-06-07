@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewChecked } from '@ang
 import { Input, Output, EventEmitter } from "@angular/core";
 import { WebsocketService } from 'src/app/_services/websocket.service';
 import { ComplexTime } from 'src/app/_helpers/time';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-chatroom',
@@ -10,13 +11,11 @@ import { ComplexTime } from 'src/app/_helpers/time';
 })
 export class ChatroomComponent implements OnInit, AfterViewChecked {
   @ViewChild('scrollBottom') scrollBottom: ElementRef;
+  @ViewChild('myForm', {static: false}) myForm: NgForm;
 
   message: string = '';
 
   @Input() chatMessage;
-  @Input() activeId;
-  @Input() myId;
-  @Input() activeContactId;
 
   @Output() sendChat = new EventEmitter<{data: string, from_user_id: string, to_user_id: string, contact_id: string}>();
 
@@ -25,7 +24,6 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-    // this.scrollToBottom();
   }
 
   ngAfterViewChecked() {
@@ -33,32 +31,43 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
   }
 
   onKey(event) {
-    
-    if (event.keyCode === 13) {
-      const sendData = {
-        "data": this.message,
-        "from_user_id" : this.myId,
-        "to_user_id": this.activeContactId,
-        "contact_id" : this.activeId
-      };
-      this.message = ''
-      this.sendChat.emit(sendData)
-    } 
+    if (event.keyCode === 13 && !event.shiftKey) {
+      event.preventDefault();
+      let  textArea = document.getElementById("textarea") 
+      textArea.style.height = '0px';
+      if (this.message && this.message.trim() !== '') {
+        const sendData = {
+          "data": this.message.trim(),
+          "from_user_id" : this.websocketService.userId,
+          "to_user_id": this.websocketService.activeContactId,
+          "contact_id" : this.websocketService.activeId
+        };
+
+        this.myForm.reset()
+        this.sendChat.emit(sendData)
+      }
+    }
   }
 
   send() {
-    const sendData = {
-      "data": this.message,
-      "from_user_id" : this.myId,
-      "to_user_id": this.activeContactId,
-      "contact_id" : this.activeId
-    };
-    this.message = ''
-    this.sendChat.emit(sendData)
+    let  textArea = document.getElementById("textarea") 
+    textArea.style.height = '0px';
+    
+    if (this.message && this.message.trim() !== '') {
+      const sendData = {
+        "data": this.message.trim(),
+        "from_user_id" : this.websocketService.userId,
+        "to_user_id": this.websocketService.activeContactId,
+        "contact_id" : this.websocketService.activeId
+      };
+
+      this.myForm.reset()
+      this.sendChat.emit(sendData)
+    }
   }
 
   loadMore() {
-    this.websocketService.loadMore(this.activeId, this.websocketService.firstChatId)
+    this.websocketService.loadMore(this.websocketService.activeId, this.websocketService.firstChatId)
   }
 
   scrollToBottom(): void {
@@ -66,12 +75,19 @@ export class ChatroomComponent implements OnInit, AfterViewChecked {
       this.scrollBottom.nativeElement.scrollIntoView({ behavior: 'smooth', block: "start" })
 
     } catch(err) {
-      console.log('error scroll to bottom:', err)
+      console.log('error scroll to bottom: ', err)
     }
   };
 
   time(time) {
     return ComplexTime(time)
+  }
+
+  autogrow(){
+    let  textArea = document.getElementById("textarea")
+    let height = textArea.scrollHeight < 50 ? textArea.scrollHeight : 50
+    textArea.style.height = '0px';
+    textArea.style.height = height + 'px';
   }
 
 }

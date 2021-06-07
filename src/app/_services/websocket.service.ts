@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ChatMessage } from '../_models/chatMessage24';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from '../../environments/environment';
@@ -34,6 +34,10 @@ export class WebsocketService {
   loadingLoadMore: boolean = false;
 
   activeId: string;
+  activeUser: string;
+  activeContactId: string;
+  myName: string;
+  myPhone: string;
 
   constructor(
     private httpService: HttpService,
@@ -64,11 +68,14 @@ export class WebsocketService {
         }
         this.chatMessages.push(incomingChat);
       }
+      this.refreshWithoutLoading();
       
     }
 
     this.websocket.onclose = (event) => {
       console.log('close: ', event);
+      window.location.reload();
+      this.httpService.errorMsg = "Something unexpectedly went wrong!"
     }
   }
 
@@ -88,12 +95,11 @@ export class WebsocketService {
       },
       err => {
         this.loadingRoom = false;
-        this.errorRoom = err.error.error;
       }
     )
   }
 
-  public loadMore (idContact: number, idChat: string) {
+  public loadMore (idContact: string, idChat: string) {
     this.loadingLoadMore = true;
     const newMessage = this.chatMessages;
     this.httpService.get(`${URL}chat/${idContact}/${idChat}`).subscribe(
@@ -107,7 +113,6 @@ export class WebsocketService {
       },
       err => {
         this.loadingLoadMore = false;
-        this.errorRoom = err.error.error;
       }
     )
   }
@@ -119,16 +124,49 @@ export class WebsocketService {
   public sendNewChat (phone: string, message: string) {
     this.loadingSendNewMsg = true;
     this.chatMessages = [];
+    this.activeId = '';
     this.successSend = false;
     this.httpService.post(`${URL}new-chat`, { phone, message }).subscribe(
       val => {
-        this.refresh();
+
+        // get active list room
+        this.refreshWithoutLoading();
+
+        // open chat room after sending new message ONLY WHEN it has room chat before
+        let friend
+        this.listMessage.forEach(el => {
+          if (el._id === val.data['contact_id']) {
+            friend = el.users_info.filter(i => i['name'] !== this.myName)[0]['name']
+          }
+        })
+        if (friend !== undefined) {
+          this.activeUser = friend
+          this.subscribeChat(val.data['contact_id'])
+        }
+        
         this.loadingSendNewMsg = false;
         this.successSend = true;
+        setTimeout(() => {
+          this.successSend = false
+        }, 500);
       },
       err => {
         this.loadingSendNewMsg = false;
-        this.errorSendNewMsg = err.error.error
+        throw new Error(err);
+        
+      }
+    )
+  }
+
+  public refreshWithoutLoading() {
+    const newList = []
+    this.user.getListMessage().subscribe(
+      val => {
+        const data = val['data']
+        data !== null && data.forEach(element => {
+          newList.push(element);
+        });
+        this.listMessage = orderBy(newList, ['created_at'], ['desc']);
       }
     )
   }
@@ -140,7 +178,7 @@ export class WebsocketService {
     this.user.getListMessage().subscribe(
       val => {
         const data = val['data']
-        data.forEach(element => {
+        data !== null && data.forEach(element => {
           newList.push(element);
         });
         this.listMessage = orderBy(newList, ['created_at'], ['desc']);
@@ -148,7 +186,6 @@ export class WebsocketService {
       },
       err => {
         this.loadingChatList = false;
-        this.errorChatList = err.error.error;
       }
     )
   }

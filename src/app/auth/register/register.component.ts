@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
   form = {
     name: null,
@@ -16,31 +17,28 @@ export class RegisterComponent implements OnInit {
   };
   isSuccessful = false;
   isSignUpFailed = false;
-  errorMessage = '';
-  isLoading: boolean = false;
 
   constructor(
-    private authService: AuthService,
-    private router: Router
+    public authService: AuthService,
+    private router: Router,
+    private tokenStorage: TokenStorageService
   ) { }
-
-  ngOnInit(): void {
-    if (this.isSuccessful) this.router.navigate(['/'])
-  }
 
   onSubmit(): void {
     const { name, phone, password } = this.form;
-    this.isLoading = true;
+    this.authService.authLoading = true;
     this.authService.register(name, phone, password).subscribe(
       data => {
-        this.isSuccessful = true;
         this.isSignUpFailed = false;
-        this.isLoading = false;
-      },
-      err => {
-        this.errorMessage = err.error.error;
-        this.isSignUpFailed = true;
-        this.isLoading = false;
+        this.authService.authLoading = false;
+        this.authService.login(phone, password).subscribe(
+          data => {
+            this.tokenStorage.saveToken(data.data.token);
+            this.tokenStorage.saveUser(data.data);
+  
+            this.router.navigate(['chat']);
+          },
+        )
       }
     );
   }

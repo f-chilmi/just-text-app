@@ -1,4 +1,5 @@
 <div class="list-wrapper">
+
   <div class="list mb-3 pointer" *ngFor="let message of websocketService.listMessage">
 
     <div class="img-wrapper d-flex align-items-center justify-content-center">
@@ -9,11 +10,11 @@
       class="text-wrapper d-flex flex-column justify-content-center" 
       (click)="selectList.emit({
         id: message._id, 
-        name: message.users_info[0]._id === myId ? message.users_info[1].name : message.users_info[0].name,
-        contactId: message.users_info[0]._id === myId ? message.users_info[1]._id : message.users_info[0]._id
+        name: message.users_info[0]._id === websocketService.userId ? message.users_info[1].name : message.users_info[0].name,
+        contactId: message.users_info[0]._id === websocketService.userId ? message.users_info[1]._id : message.users_info[0]._id
       })" 
     >
-      <ng-container *ngIf="message.users_info[0]._id === myId; else anotherId">
+      <ng-container *ngIf="message.users_info[0]._id === websocketService.userId; else anotherId">
         <p class="sender-name"> {{message.users_info[1].name}}</p>
       </ng-container>
       <ng-template #anotherId>
@@ -27,4 +28,5 @@
     </div>
 
   </div>
+  
 </div>

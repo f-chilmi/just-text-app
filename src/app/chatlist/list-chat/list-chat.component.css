@@ -150,3 +150,7 @@ textarea {
 .form-control:focus {
   box-shadow: none;
 }
+
+.selected {
+  border: 1px solid #7dc9e7;
+}

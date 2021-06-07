@@ -1,0 +1,15 @@
+<div>
+    <ng-template #myModal let-modal>
+        <div class="modal-body">
+            <div class="d-flex flex-column align-items-center p-4">
+                <i class="material-icons mb-2" style="font-size: '100px'; color: red;">highlight_off</i>
+                <Modal.Body class="modal-body p-2" style="font-size: '19px';">{{ httpService.errorMsg }}</Modal.Body>
+                <div class="d-flex mt-3">
+                    <Button class="m-2 btn-light py-2 px-3" style="border-radius: '10px';" (click)=closeModal()>
+                    Ok
+                    </Button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

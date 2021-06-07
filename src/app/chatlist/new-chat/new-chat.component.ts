@@ -1,9 +1,8 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { ChatService } from 'src/app/_services/chat.service';
+import { Component, OnInit, DoCheck, TemplateRef } from '@angular/core';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Output, EventEmitter } from "@angular/core";
 import { WebsocketService } from 'src/app/_services/websocket.service';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-new-chat',
@@ -17,15 +16,16 @@ export class NewChatComponent implements OnInit, DoCheck{
     phone: null,
     message: null
   };
+  isSuccessful = false;
   errorMessage: string;
-
   modalReference = null;
 
   @Output() refresh = new EventEmitter<{}>();
   
   constructor(
     private modalService: NgbModal,
-    public websocketService: WebsocketService
+    public websocketService: WebsocketService,
+    private tokenStorage: TokenStorageService
     ) {}
 
   ngOnInit(): void {
@@ -33,12 +33,19 @@ export class NewChatComponent implements OnInit, DoCheck{
 
   ngDoCheck(): void {
     if (this.websocketService.successSend) {
-      this.modalReference.close();
+      this.modalService.dismissAll();
+      setTimeout(() => {
+        this.form = {
+          phone: null,
+          message: null
+        };
+      }, 200);
     }
   }
 
   open(content) {
     this.modalReference = this.modalService.open(content);
+
     this.modalReference.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -60,12 +67,11 @@ export class NewChatComponent implements OnInit, DoCheck{
     }
   }
 
-  submit () {
+  onSubmit(): void {
     const { phone, message } = this.form;
-    this.websocketService.sendNewChat(phone, message)
-    // this.modalReference.close();
-    // console.log(this.websocketService.successSend)
-    
+    if (this.websocketService.myPhone !== phone) {
+      this.websocketService.sendNewChat(phone, message)
+    }    
   }
 
 }
